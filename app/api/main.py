@@ -1,5 +1,4 @@
-import aiogram
-from aiogram import Bot, Dispatcher, F
+from aiogram import Bot, Dispatcher
 from aiogram.types import Message
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
@@ -10,14 +9,14 @@ import asyncio
 from pathlib import Path
 import logging
 
-from model.bot.api import NerdLM
-from model.preprocess.vocabulary_regist import Vocabulary
+from app.model.nerdlm import NerdLM
+from app.model.vocabulary import Vocabulary
 
 dotenv.load_dotenv(Path(__file__).resolve().parent.parent / "keys" / ".env")
 token = os.getenv('TG_BOT_TOKEN')
 
 dataset_path = Path(__file__).resolve().parents[2] / "datasets" / "english_qa" / "extended_qa_dataset.txt"
-model = NerdLM(saved_model=True, saved_model_name='model/models/nerdlm.pt', inference=True)
+model = NerdLM(saved_model=True, saved_model_name='model/saved_models/nerdlm.pt', inference=True)
 vocab = Vocabulary()
 VOCAB_PATH = Path(__file__).resolve().parents[2] / "datasets" / "vocabulary.json"
 ENABLE_VOCAB_UPDATE = os.getenv("ENABLE_VOCAB_UPDATE", "0") == "1"

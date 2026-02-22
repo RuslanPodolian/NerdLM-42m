@@ -1,5 +1,5 @@
-from model.structure.transformer import DeepTransformer
-from model.preprocess.dataset_preparation import CustomDataset, DatasetPreparation
+from app.model.transformer import DeepTransformer
+from app.model.dataset import CustomDataset, DatasetPreparation
 
 import torch
 import torch.nn as nn
@@ -52,8 +52,11 @@ class LossWithLS(nn.Module):
 
 class TrainingEvaluating:
     def __init__(self, path, test_path, device='cpu'):
-        if torch.cuda.is_available():
+        if device != 'cpu' and torch.cuda.is_available():
             device = 'cuda'
+        else:
+            device = 'cpu'
+        self.device = device
 
         self.custom_dataset = CustomDataset(path)
         if test_path is None:
@@ -63,7 +66,15 @@ class TrainingEvaluating:
         self.custom_dataloader = DataLoader(self.custom_dataset, batch_size=32, shuffle=True)
         self.test_dataloader = DataLoader(self.test_dataset, batch_size=32)
 
-        self.deep_transformer = DeepTransformer(d_model=512, num_heads=8, num_layers_gru=2, vocab_size=self.custom_dataset.get_word_map(), d_ff=2048, dropout_rate=0.1).to(device)
+        self.deep_transformer = DeepTransformer(
+            d_model=512,
+            num_heads=8,
+            num_layers_gru=2,
+            vocab_size=self.custom_dataset.get_word_map(),
+            d_ff=2048,
+            dropout_rate=0.1,
+            device=device,
+        ).to(device)
         self.adam_optimizer = optim.Adam(self.deep_transformer.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9)
         self.transformer_optimizer = AdamWarmup(self.deep_transformer.d_model, warmup_steps=4000, optimizer=self.adam_optimizer)
         self.criterion = LossWithLS(self.custom_dataset.get_word_map(), smooth=0.1)
@@ -73,26 +84,26 @@ class TrainingEvaluating:
         count = 0
         self.deep_transformer.train()
 
-        print("X dataset tokens: ", self.custom_dataset.x)
-        print("Y dataset tokens: ", self.custom_dataset.y)
-        print(f"X size: {len(self.custom_dataset.x)}")
-        print(f"Y size: {len(self.custom_dataset.y)}")
+        # print("X dataset tokens: ", self.custom_dataset.x)
+        # print("Y dataset tokens: ", self.custom_dataset.y)
+        # print(f"X size: {len(self.custom_dataset.x)}")
+        # print(f"Y size: {len(self.custom_dataset.y)}")
 
         for epoch in range(epochs):
             for x, y in self.custom_dataloader:
-                x = x.to(self.deep_transformer.device)
-                y = y.to(self.deep_transformer.device)
+                x = x.to(self.device)
+                y = y.to(self.device)
 
                 predictions, predictions_mask = self.deep_transformer(x)
                 loss = self.criterion(predictions, y, predictions_mask)
-                self.transformer_optimizer.zero_grad()
+                self.adam_optimizer.zero_grad()
                 loss.backward()
                 self.transformer_optimizer.step()
 
                 sum_loss += loss.item()
                 count += 1
 
-                logging.info(f"Epoch: {epoch}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
+            logging.info(f"Epoch: {epoch}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
 
     def save_model(self, path):
         torch.save(self.deep_transformer.state_dict(), path)
@@ -104,11 +115,11 @@ class TrainingEvaluating:
 
         with torch.no_grad():
             for x, y in self.test_dataloader:
-                x = x.to(self.deep_transformer.device)
-                y = y.to(self.deep_transformer.device)
+                x = x.to(self.device)
+                y = y.to(self.device)
 
-                predictions, _ = self.deep_transformer(x)
-                loss = self.criterion(predictions, y)
+                predictions, predictions_mask = self.deep_transformer(x)
+                loss = self.criterion(predictions, y, predictions_mask)
                 indices = torch.argmax(predictions, dim=-1)
 
                 for index in indices:
@@ -153,5 +164,5 @@ class Predictor:
 
 
 if __name__ == "__main__":
-    training = TrainingEvaluating('../../model/datasets/english_qa/extended_qa_dataset.txt', None)
+    training = TrainingEvaluating('datasets/english_qa/extended_qa_dataset.txt', None)
     training.train(epochs=10)

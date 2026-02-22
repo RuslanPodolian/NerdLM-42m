@@ -3,4 +3,4 @@ env/
 .DS_Store
 __pycache__/
 *.pyc
-model/api/keys/.env
+app/api/keys/.env

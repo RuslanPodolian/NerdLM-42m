@@ -12,13 +12,14 @@ class Vocabulary:
         self.word_map_coef = self.word_map['<unk>'] + 1
         self.idx_to_word = {idx: token for token, idx in self.word_map.items()}
 
-        self.save_json_dump(os.path.join(os.path.dirname(__file__), '../datasets/vocabulary.json'))
+        self.save_json_dump(os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json'))
 
         try:
-            self.word_map = self.load_json(os.path.join(os.path.dirname(__file__), '../datasets/vocabulary.json'))
+            self.word_map = self.load_json(os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json'))
         except Exception as e:
             print(e)
-            print("No vocabulary file found. Initializing existing base one.")
+            print("No vocabulary file found or error loading it. Initializing existing base one.")
+
 
 
         self.punctuation_str = '!@#$%^&*()_+-=[]{}|\\:;”“‘’<>,.?/~`'
@@ -29,7 +30,7 @@ class Vocabulary:
     def add_word_per_line(self, lines, split_factor=' '):
         for line in lines:
             for word in line.split(split_factor):
-                if word not in self.punctuation_str:
+                if word not in self.punctuation_str and word not in self.word_map:
                     self.word_map[word] = self.word_map_coef
                     self.word_map_coef += 1
 

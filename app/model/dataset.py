@@ -1,8 +1,7 @@
-import os
 import torch
 from pathlib import Path
-from torch.utils.data import Dataset, DataLoader
-from model.preprocess.vocabulary_regist import Vocabulary
+from torch.utils.data import Dataset
+from app.model.vocabulary import Vocabulary
 
 
 class DatasetPreparation:
@@ -38,16 +37,16 @@ class DatasetPreparation:
         path = self._validate_path(path)
         lines = self.vocabulary.load_lines_of_text_file(path)
         self.vocabulary.add_word_per_line(lines)
-        self.vocabulary.save_json_dump('model/datasets/vocabulary.json')
+        self.vocabulary.save_json_dump('./app/model/datasets/vocabulary.json')
 
         x = []
         y = []
 
         for line in lines:
             if 'ans:' in line:
-                y.append(self.convert_line_to_tensor(line, target=True))
+                y.append(self.convert_line_to_tensor(line, target=False))
             elif 'ques:' in line:
-                x.append(self.convert_line_to_tensor(line, target=False))
+                x.append(self.convert_line_to_tensor(line, target=True))
 
         return x, y
 

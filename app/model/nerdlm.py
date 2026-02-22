@@ -1,6 +1,6 @@
-from model.structure.transformer import DeepTransformer
-from model.preprocess.dataset_preparation import CustomDataset, DatasetPreparation
-from model.model_attendance.training import TrainingEvaluating, Predictor
+from app.model.transformer import DeepTransformer
+from app.model.dataset import CustomDataset
+from app.model.training import TrainingEvaluating, Predictor
 import torch
 from pathlib import Path
 import glob
@@ -9,7 +9,7 @@ import os
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 class NerdLM:
-    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='model/models/nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
+    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='model/saved_models/nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
         model_path = Path(saved_model_name)
         if device != 'cpu':
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -80,7 +80,7 @@ class NerdLM:
         return text
 
 if __name__ == "__main__":
-    bot = NerdLM('model/datasets/english_qa/extended_qa_dataset.txt', training=True, inference=False)
-    files = glob.glob(os.path.join('../../model/datasets/english_qa', '*.txt'))
+    bot = NerdLM('app/model/datasets/english_qa/extended_qa_dataset.txt', training=True, inference=False)
+    files = glob.glob(os.path.join('datasets/english_qa', '*.txt'))
     # bot.large_train(files, epochs=100)
     bot.train()

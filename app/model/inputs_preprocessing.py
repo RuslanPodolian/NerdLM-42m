@@ -32,7 +32,7 @@ class PositionalEncoding(nn.Module):
 class InputPreprocessing(nn.Module):
     def __init__(self, d_model: int, vocab_size: int, max_length: int = 256):
         super(InputPreprocessing, self).__init__()
-        self.embedding = Embedding(d_model, vocab_size)
+        self.embedding = Embedding(vocab_size, d_model)
         self.positional_encoding = PositionalEncoding(d_model, max_length)
     
     def subsequent_mask(self, size):

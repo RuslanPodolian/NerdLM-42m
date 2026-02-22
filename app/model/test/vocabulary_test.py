@@ -1,4 +1,4 @@
-from model.preprocess.vocabulary_regist import Vocabulary
+from app.model.vocabulary import Vocabulary
 
 class VocabularyReadingTest:
     def __init__(self):
