@@ -106,7 +106,7 @@ class TrainingEvaluating:
                 sum_loss += loss.item()
                 count += 1
 
-                logging.info(f"Epoch: {epoch}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
+            print(f"Epoch: {epoch}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
 
     def save_model(self, path):
         torch.save(self.deep_transformer.state_dict(), path)
