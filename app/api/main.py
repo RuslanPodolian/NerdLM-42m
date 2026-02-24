@@ -12,18 +12,29 @@ import logging
 from app.model.nerdlm import NerdLM
 from app.model.vocabulary import Vocabulary
 
-dotenv.load_dotenv(Path(__file__).resolve().parent.parent / "keys" / ".env")
-token = os.getenv('TG_BOT_TOKEN')
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+API_DIR = Path(__file__).resolve().parent
 
-dataset_path = Path(__file__).resolve().parents[2] / "datasets" / "english_qa" / "extended_qa_dataset.txt"
-model = NerdLM(saved_model=True, saved_model_name='model/saved_models/nerdlm.pt', inference=True)
+env_path = Path(os.getenv("BOT_ENV_PATH", str(API_DIR / "keys" / ".env")))
+dotenv.load_dotenv(env_path)
+token = os.getenv("TG_BOT_TOKEN")
+
+model_path = Path(
+    os.getenv("NERDLM_MODEL_PATH", str(PROJECT_ROOT / "app" / "model" / "saved_models" / "nerdlm.pt"))
+)
+vocab_path = Path(
+    os.getenv("NERDLM_VOCAB_PATH", str(PROJECT_ROOT / "app" / "model" / "datasets" / "vocabulary.json"))
+)
+enable_vocab_update = os.getenv("ENABLE_VOCAB_UPDATE", "0") == "1"
+
+model = NerdLM(saved_model=True, saved_model_name=str(model_path), inference=True, training=False)
 vocab = Vocabulary()
-VOCAB_PATH = Path(__file__).resolve().parents[2] / "datasets" / "vocabulary.json"
-ENABLE_VOCAB_UPDATE = os.getenv("ENABLE_VOCAB_UPDATE", "0") == "1"
 
 if not token:
     raise ValueError(
-        "TG_BOT_TOKEN not found! Please ensure the .env file exists at '../../../model/api/keys/.env' and contains TG_BOT_TOKEN=your_token_here")
+        "TG_BOT_TOKEN not found! Set it in the environment or add it to "
+        f"'{env_path}' (or set BOT_ENV_PATH)."
+    )
 
 bot = Bot(token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
@@ -41,12 +52,12 @@ async def chat_command(message: Message):
 @dp.message()
 async def answer(message: Message):
     # In inference, avoid mutating/creating datasets unless explicitly enabled.
-    if ENABLE_VOCAB_UPDATE:
+    if enable_vocab_update:
         words = message.text.split()
         for word in words:
             vocab.add_word(word)
-        VOCAB_PATH.parent.mkdir(parents=True, exist_ok=True)
-        vocab.save_json_dump(str(VOCAB_PATH))
+        vocab_path.parent.mkdir(parents=True, exist_ok=True)
+        vocab.save_json_dump(str(vocab_path))
 
     output = model.generate_answer(message.text)
 

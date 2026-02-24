@@ -25,7 +25,7 @@ class MultiHeadAttention(nn.Module):
         scores = torch.matmul(query, key.transpose(-2, -1)) / torch.sqrt(torch.tensor(self.d_k, dtype=torch.float32))
 
         if mask is not None:
-            scores = scores.masked_fill(mask == 0, -1e9)
+            scores = scores.transpose(0, 1).masked_fill(mask == 0, -1e9).transpose(0, 1)
 
         attention = self.dropout(F.softmax(scores, dim=-1))
 

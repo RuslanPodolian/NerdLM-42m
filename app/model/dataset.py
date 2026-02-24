@@ -37,16 +37,16 @@ class DatasetPreparation:
         path = self._validate_path(path)
         lines = self.vocabulary.load_lines_of_text_file(path)
         self.vocabulary.add_word_per_line(lines)
-        self.vocabulary.save_json_dump('./app/model/datasets/vocabulary.json')
+        self.vocabulary.save_json_dump('.//app/model/datasets/vocabulary.json')
 
         x = []
         y = []
 
         for line in lines:
             if 'ans:' in line:
-                y.append(self.convert_line_to_tensor(line, target=False))
+                y.append(self.convert_line_to_tensor(line, target=True))
             elif 'ques:' in line:
-                x.append(self.convert_line_to_tensor(line, target=True))
+                x.append(self.convert_line_to_tensor(line, target=False))
 
         return x, y
 

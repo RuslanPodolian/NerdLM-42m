@@ -41,7 +41,7 @@ class LossWithLS(nn.Module):
         prediction = prediction.view(-1, prediction.size(-1))
         target = target.view(-1)
         mask = mask.float()
-        mask = mask.view(-1)
+        mask = mask.reshape(-1) # do not use view -1, it returns an error
         labels = prediction.data.clone()
         labels.fill_(self.smooth / (self.size - 1))
         labels.scatter(1, target.data.unsqueeze(1), self.confidence)

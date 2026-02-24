@@ -49,7 +49,11 @@ class Vocabulary:
         #     json.dump(self.word_map, f)
         if os.path.exists(path):
             with open(path, 'r') as f:
-                existing = json.load(f)
+                try:
+                   existing = json.load(f)
+                except json.decoder.JSONDecodeError:
+                    existing = {}
+                    print("Error loading existing vocabulary file. Creating new one.")
             existing.update(self.word_map)
         else:
             print("No file was found! Import loaded word_map")

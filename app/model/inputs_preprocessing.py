@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class Embedding(nn.Module):
-    def __init__(self, d_model: int, vocab_size: int):
+    def __init__(self, vocab_size: int, d_model: int):
         super(Embedding, self).__init__()
         self.d_model = d_model
         self.vocab_size = vocab_size
@@ -24,7 +24,7 @@ class PositionalEncoding(nn.Module):
         pe[pos, i] = torch.sin(pos / 10000 ** (i / self.d_model))
         pe[pos, i + 1] = torch.cos(pos / 10000 ** ((i + 1) / self.d_model))
 
-        seq_len = x.size(0)
+        seq_len = x.size(-1)
         x = x + pe[:seq_len, :].unsqueeze(0)
 
         return x
@@ -40,7 +40,7 @@ class InputPreprocessing(nn.Module):
 
     def create_mask(self, token_ids):
         x_mask = token_ids != 0
-        seq_len = token_ids.size(0)
+        seq_len = token_ids.size(-1)
         x_mask = x_mask.unsqueeze(1) & self.subsequent_mask(seq_len).type_as(x_mask.data)
         return x_mask
 
