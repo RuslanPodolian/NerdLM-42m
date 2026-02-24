@@ -37,9 +37,12 @@ class LossWithLS(nn.Module):
         self.confidence = 1 - smooth
         self.size = size
 
-    def forward(self, prediction, target, mask):
+    def forward(self, prediction, target, mask=None):
         prediction = prediction.view(-1, prediction.size(-1))
         target = target.view(-1)
+        if mask is None:
+            # Mask out padding tokens in the target.
+            mask = target.ne(0)
         mask = mask.float()
         mask = mask.reshape(-1) # do not use view -1, it returns an error
         labels = prediction.data.clone()
@@ -95,7 +98,7 @@ class TrainingEvaluating:
                 y = y.to(self.device)
 
                 predictions, predictions_mask = self.deep_transformer(x)
-                loss = self.criterion(predictions, y, predictions_mask)
+                loss = self.criterion(predictions, y)
                 self.adam_optimizer.zero_grad()
                 loss.backward()
                 self.transformer_optimizer.step()
@@ -103,7 +106,7 @@ class TrainingEvaluating:
                 sum_loss += loss.item()
                 count += 1
 
-            logging.info(f"Epoch: {epoch}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
+                logging.info(f"Epoch: {epoch}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
 
     def save_model(self, path):
         torch.save(self.deep_transformer.state_dict(), path)
@@ -119,7 +122,7 @@ class TrainingEvaluating:
                 y = y.to(self.device)
 
                 predictions, predictions_mask = self.deep_transformer(x)
-                loss = self.criterion(predictions, y, predictions_mask)
+                loss = self.criterion(predictions, y)
                 indices = torch.argmax(predictions, dim=-1)
 
                 for index in indices:
