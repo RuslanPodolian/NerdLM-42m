@@ -14,18 +14,18 @@ class DatasetPreparation:
         self.vocabulary.add_word_per_line(tokens)
 
         if target:
-            base_tokens = tokens[: self.vocabulary.max_length]
-            out_sequence = [
-                self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>'])
-                for token in base_tokens
-            ]
-        else:
             max_body_len = max(0, self.vocabulary.max_length - 2)
             base_tokens = tokens[:max_body_len]
             out_sequence = [self.vocabulary.word_map['<start>']] + [
                 self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>'])
                 for token in base_tokens
             ] + [self.vocabulary.word_map['<end>']]
+        else:
+            base_tokens = tokens[: self.vocabulary.max_length]
+            out_sequence = [
+                self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>'])
+                for token in base_tokens
+            ]
 
         pad_count = self.vocabulary.max_length - len(out_sequence)
         if pad_count > 0:
