@@ -38,16 +38,29 @@ class LossWithLS(nn.Module):
         self.size = size
 
     def forward(self, prediction, target, mask=None):
-        prediction = prediction.view(-1, prediction.size(-1))
-        target = target.view(-1)
+        # Get original batch size and sequence length from prediction
+        batch_size, seq_len, vocab_size = prediction.size()
+
+        # Ensure target matches prediction sequence length
+        if target.size(1) > seq_len:
+            target = target[:, :seq_len]
+        elif target.size(1) < seq_len:
+            # Pad target if it's shorter (shouldn't normally happen)
+            padding = torch.zeros(batch_size, seq_len - target.size(1), dtype=target.dtype, device=target.device)
+            target = torch.cat([target, padding], dim=1)
+
+        prediction = prediction.view(-1, vocab_size)
+        target = target.contiguous().view(-1)
+
         if mask is None:
             # Mask out padding tokens in the target.
             mask = target.ne(0)
         mask = mask.float()
         mask = mask.reshape(-1) # do not use view -1, it returns an error
+
         labels = prediction.data.clone()
         labels.fill_(self.smooth / (self.size - 1))
-        labels.scatter(1, target.data.unsqueeze(1), self.confidence)
+        labels.scatter_(1, target.data.unsqueeze(1).long(), self.confidence)
         loss = self.criterion(prediction, labels)
         loss = (loss.sum(1) * mask).sum() / mask.sum()
 
@@ -87,6 +100,8 @@ class TrainingEvaluating:
         count = 0
         self.deep_transformer.train()
 
+        print("Training started...")
+
         # print("X dataset tokens: ", self.custom_dataset.x)
         # print("Y dataset tokens: ", self.custom_dataset.y)
         # print(f"X size: {len(self.custom_dataset.x)}")
@@ -108,13 +123,18 @@ class TrainingEvaluating:
 
             print(f"Epoch: {epoch}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
 
+        print("Training completed...")
+
     def save_model(self, path):
         torch.save(self.deep_transformer.state_dict(), path)
+        print("Model saved")
 
     def evaluate(self):
         self.deep_transformer.eval()
         sequences = []
         sum_loss = 0
+
+        print("Evaluating started...")
 
         with torch.no_grad():
             for x, y in self.test_dataloader:
@@ -129,6 +149,9 @@ class TrainingEvaluating:
                     sequences.append(self.custom_dataset.get_word_map()[index])
                 sum_loss += loss.item()
                 logging.info(f"Test Loss: {sum_loss/len(sequences)}")
+
+        print("Evaluating completed...")
+
         return sequences
 
 class Predictor:
@@ -158,7 +181,7 @@ class Predictor:
         sequences = []
         tokens = self.dataset_preparation.convert_line_to_tensor(text)
         out = self.deep_transformer(tokens)
-        indices = torch.argmax(out[0], dim=-1)[0] # second one in out is list like [[True, False], [False, False]], and indices have extrac brackets
+        indices = torch.argmax(out[0], dim=1)[0] # second one in out is list like [[True, False], [False, False]], and indices have extrac brackets
 
         for index in indices:
             sequences.append(self.dataset_preparation.vocabulary.idx_to_word[int(index)])

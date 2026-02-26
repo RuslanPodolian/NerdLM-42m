@@ -9,18 +9,21 @@ class Vocabulary:
         self.word_map['<start>'] = 1
         self.word_map['<end>'] = 2
         self.word_map['<unk>'] = 3
-        self.word_map_coef = self.word_map['<unk>'] + 1
-        self.idx_to_word = {idx: token for token, idx in self.word_map.items()}
+        self.word_map["word_map_coef"] = self.word_map['<unk>'] + 1
 
-        self.save_json_dump(os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json'))
+        self.save_json_word_map = lambda: self.save_json_dump(os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json'))
+        self.load_json_word_map = lambda: self.load_json(os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json'))
+
+        self.save_json_word_map()
+
 
         try:
-            self.word_map = self.load_json(os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json'))
+            self.word_map = self.load_json_word_map()
         except Exception as e:
             print(e)
             print("No vocabulary file found or error loading it. Initializing existing base one.")
 
-
+        self.idx_to_word = {idx: token for token, idx in self.word_map.items()}
 
         self.punctuation_str = '!@#$%^&*()_+-=[]{}|\\:;”“‘’<>,.?/~`'
         self.max_length = 256
@@ -28,23 +31,32 @@ class Vocabulary:
 
 
     def add_word_per_line(self, lines, split_factor=' '):
+        self.word_map = self.load_json_word_map()
+        self.word_map['word_map_coef'] = self.word_map['word_map_coef']
         for line in lines:
             for word in line.split(split_factor):
                 if word not in self.punctuation_str and word not in self.word_map:
-                    self.word_map[word] = self.word_map_coef
-                    self.word_map_coef += 1
+                    self.word_map[word] = self.word_map["word_map_coef"]
+                    self.word_map['word_map_coef'] += 1
+        self.save_json_word_map()
 
     def add_word(self, word):
+        self.word_map = self.load_json_word_map()
+        self.word_map['word_map_coef'] = self.word_map['word_map_coef']
         if word not in self.word_map:
-            self.word_map[word] = self.word_map_coef
-            self.word_map_coef += 1
+            self.word_map[word] = self.word_map["word_map_coef"]
+            self.word_map["word_map_coef"] += 1
+        self.save_json_word_map()
 
     def remove_word(self, word):
+        self.word_map = self.load_json_word_map()
+        self.word_map['word_map_coef'] = self.word_map['word_map_coef']
         if word in self.word_map:
             del self.word_map[word]
-            self.word_map_coef -= 1
+            self.word_map["word_map_coef"] -= 1
+        self.save_json_word_map()
 
-    def save_json_dump(self, path):
+    def save_json_dump(self, path, logging=False):
         # with open(path, 'w') as f:
         #     json.dump(self.word_map, f)
         if os.path.exists(path):
@@ -61,7 +73,8 @@ class Vocabulary:
 
         with open(path, 'w') as f:
             json.dump(existing, f)
-        print(f"Vocabulary saved to {path}")
+        if logging:
+            print(f"Vocabulary saved to {path}")
 
 
     def load_json(self, path):

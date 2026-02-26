@@ -1,15 +1,17 @@
 from app.model.transformer import DeepTransformer
-from app.model.dataset import CustomDataset
+from app.model.dataset import CustomDataset, DatasetPreparation
 from app.model.training import TrainingEvaluating, Predictor
 import torch
 from pathlib import Path
 import glob
 import os
 
+from app.model.vocabulary import Vocabulary
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 class NerdLM:
-    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='model/saved_models/nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
+    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='..//nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
         model_path = Path(saved_model_name)
         if device != 'cpu':
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -48,12 +50,12 @@ class NerdLM:
 
             self.training = TrainingEvaluating(str(path_obj), test_path, device=device)
 
-            self.customer_dataset = CustomDataset(str(path_obj))
-            self.word_map = self.customer_dataset.get_word_map()
+            self.custom_dataset = CustomDataset(str(path_obj))
+            self.word_map = self.custom_dataset.get_word_map()
 
         if inference:
             self.predictor = Predictor(model_path)
-
+        self.dataset_preparation = DatasetPreparation()
 
     def train(self, epochs=10, save_model: bool = True, save_path: str ='nerdlm.pt'):
         self.training.train(epochs=epochs)
@@ -62,8 +64,11 @@ class NerdLM:
 
     def large_train(self, paths: list, epochs=10, save_model: bool = True, save_path: str ='nerdlm.pt'):
         for path in paths:
+            print("-"*15, f"Training on: {path}", "-"*15)
             self.training = TrainingEvaluating(path, test_path=None)
             self.training.train(epochs=epochs)
+            print(f"{path} training complete. Metrics: {self.training.evaluate()}")
+            print("-"*50)
 
         if save_model:
             self.training.save_model(save_path)
@@ -74,13 +79,18 @@ class NerdLM:
             print("Please enter a question.")
 
         sequences = self.predictor.predict(question)
+        
+        unpadded_sequences = self.dataset_preparation.remove_padding(sequences)
 
-        text = ''.join(sequences)
+        text = ''.join(unpadded_sequences)
 
         return text
 
 if __name__ == "__main__":
     bot = NerdLM('app/model/datasets/english_qa/extended_qa_dataset.txt', training=True, inference=False)
-    files = glob.glob(os.path.join('datasets/english_qa', '*.txt'))
-    # bot.large_train(files, epochs=100)
-    bot.train()
+    data_dir = 'app/model/datasets/english_qa/'
+    files = glob.glob(os.path.join(data_dir, '*.txt'))
+
+    print(files)
+    bot.large_train(files, epochs=100)
+    # bot.train(epochs=100)

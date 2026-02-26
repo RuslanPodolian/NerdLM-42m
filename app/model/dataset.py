@@ -14,30 +14,29 @@ class DatasetPreparation:
         self.vocabulary.add_word_per_line(tokens)
 
         if target:
-            max_body_len = max(0, self.vocabulary.max_length - 2)
-            base_tokens = tokens[:max_body_len]
-            out_sequence = [self.vocabulary.word_map['<start>']] + [
-                self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>'])
-                for token in base_tokens
-            ] + [self.vocabulary.word_map['<end>']]
+            out_sequence = [self.vocabulary.word_map['<start>']] + [self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>']) for token in tokens] + [self.vocabulary.word_map['<end>']] + [self.vocabulary.word_map['<pad>'] for _ in range(self.vocabulary.max_length-len(tokens))]
         else:
-            base_tokens = tokens[: self.vocabulary.max_length]
-            out_sequence = [
-                self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>'])
-                for token in base_tokens
-            ]
-
-        pad_count = self.vocabulary.max_length - len(out_sequence)
-        if pad_count > 0:
-            out_sequence += [self.vocabulary.word_map['<pad>']] * pad_count
+            out_sequence = [self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>']) for token in tokens] + [self.vocabulary.word_map['<pad>'] for _ in range(self.vocabulary.max_length-len(tokens))]
 
         return torch.LongTensor(out_sequence)
+
+    def remove_padding(self, tokens):
+        prepared_tokens = []
+
+        for token in tokens:
+            if token == self.vocabulary.word_map['<pad>']:
+                tokens.remove(token)
+                prepared_tokens.append(token)
+            else:
+                prepared_tokens.append(token)
+
+        return prepared_tokens
 
     def load_dataset(self, path):
         path = self._validate_path(path)
         lines = self.vocabulary.load_lines_of_text_file(path)
         self.vocabulary.add_word_per_line(lines)
-        self.vocabulary.save_json_dump('.//app/model/datasets/vocabulary.json')
+        self.vocabulary.save_json_dump('./app/model/datasets/vocabulary.json')
 
         x = []
         y = []
@@ -68,6 +67,8 @@ class CustomDataset(Dataset):
         self.path = DatasetPreparation._validate_path(path)
         self.dataset_preparation = DatasetPreparation()
         self.x, self.y = self.dataset_preparation.load_dataset(self.path)
+
+        print(f"Dataset loaded; vocabulary size: {self.dataset_preparation.get_word_map()}; x length: {len(self.x)}; y length: {len(self.y)}")
 
     def __getitem__(self, idx):
         return self.x[idx], self.y[idx]
