@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from app.model.inputs_preprocessing import InputPreprocessing
+from nerdlm_app.model.inputs_preprocessing import InputPreprocessing
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, d_model: int, num_heads: int, dropout_rate: float = 0.1, device='cuda'):

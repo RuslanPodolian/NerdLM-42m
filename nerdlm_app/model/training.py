@@ -1,5 +1,5 @@
-from app.model.transformer import DeepTransformer
-from app.model.dataset import CustomDataset, DatasetPreparation
+from nerdlm_app.model.transformer import DeepTransformer
+from nerdlm_app.model.dataset import CustomDataset, DatasetPreparation
 
 import torch
 import torch.nn as nn

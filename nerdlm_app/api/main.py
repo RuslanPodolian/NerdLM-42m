@@ -9,8 +9,8 @@ import asyncio
 from pathlib import Path
 import logging
 
-from app.model.nerdlm import NerdLM
-from app.model.vocabulary import Vocabulary
+from nerdlm_app.model.nerdlm import NerdLM
+from nerdlm_app.model.vocabulary import Vocabulary
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 API_DIR = Path(__file__).resolve().parent
@@ -20,10 +20,10 @@ dotenv.load_dotenv(env_path)
 token = os.getenv("TG_BOT_TOKEN")
 
 model_path = Path(
-    os.getenv("NERDLM_MODEL_PATH", str(PROJECT_ROOT / "app" / "model" / "saved_models" / "nerdlm.pt"))
+    os.getenv("NERDLM_MODEL_PATH", str(PROJECT_ROOT / "nerdlm_app" / "model" / "saved_models" / "nerdlm.pt"))
 )
 vocab_path = Path(
-    os.getenv("NERDLM_VOCAB_PATH", str(PROJECT_ROOT / "app" / "model" / "datasets" / "vocabulary.json"))
+    os.getenv("NERDLM_VOCAB_PATH", str(PROJECT_ROOT / "nerdlm_app" / "model" / "datasets" / "vocabulary.json"))
 )
 enable_vocab_update = os.getenv("ENABLE_VOCAB_UPDATE", "0") == "1"
 

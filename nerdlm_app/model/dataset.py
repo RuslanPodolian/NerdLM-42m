@@ -1,7 +1,7 @@
 import torch
 from pathlib import Path
 from torch.utils.data import Dataset
-from app.model.vocabulary import Vocabulary
+from nerdlm_app.model.vocabulary import Vocabulary
 
 
 class DatasetPreparation:

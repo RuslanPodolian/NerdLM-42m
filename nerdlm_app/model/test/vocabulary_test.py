@@ -1,4 +1,4 @@
-from app.model.vocabulary import Vocabulary
+from nerdlm_app.model.vocabulary import Vocabulary
 
 class VocabularyReadingTest:
     def __init__(self):

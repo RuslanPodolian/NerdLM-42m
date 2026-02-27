@@ -1,12 +1,12 @@
-from app.model.transformer import DeepTransformer
-from app.model.dataset import CustomDataset, DatasetPreparation
-from app.model.training import TrainingEvaluating, Predictor
+from nerdlm_app.model.transformer import DeepTransformer
+from nerdlm_app.model.dataset import CustomDataset, DatasetPreparation
+from nerdlm_app.model.training import TrainingEvaluating, Predictor
 import torch
 from pathlib import Path
 import glob
 import os
 
-from app.model.vocabulary import Vocabulary
+from nerdlm_app.model.vocabulary import Vocabulary
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -85,8 +85,8 @@ class NerdLM:
         return text
 
 if __name__ == "__main__":
-    bot = NerdLM('app/model/datasets/english_qa/extended_qa_dataset.txt', training=True, inference=False)
-    data_dir = 'app/model/datasets/english_qa/'
+    bot = NerdLM('nerdlm_app/model/datasets/english_qa/extended_qa_dataset.txt', training=True, inference=False)
+    data_dir = 'nerdlm_app/model/datasets/english_qa/'
     files = glob.glob(os.path.join(data_dir, '*.txt'))
 
     print(files)
