@@ -11,7 +11,7 @@ from nerdlm_app.model.vocabulary import Vocabulary
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 class NerdLM:
-    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='..//nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
+    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='../../nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
         model_path = Path(saved_model_name)
         if device != 'cpu':
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -86,7 +86,7 @@ class NerdLM:
 
 if __name__ == "__main__":
     bot = NerdLM('nerdlm_app/model/datasets/english_qa/extended_qa_dataset.txt', training=True, inference=False)
-    data_dir = 'nerdlm_app/model/datasets/english_qa/'
+    data_dir = './nerdlm_app/model/datasets/english_qa/'
     files = glob.glob(os.path.join(data_dir, '*.txt'))
 
     print(files)

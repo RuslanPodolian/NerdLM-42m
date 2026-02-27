@@ -11,14 +11,17 @@ class Vocabulary:
         self.word_map['<unk>'] = 3
         self.word_map["word_map_coef"] = self.word_map['<unk>'] + 1
 
-        self.save_json_word_map = lambda: self.save_json_dump(os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json'))
-        self.load_json_word_map = lambda: self.load_json(os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json'))
+        vocabulary_path = os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json')
+
+        self.save_json_word_map = lambda: self.save_json_dump(vocabulary_path)
+        self.load_json_word_map = lambda: self.load_json(os.path.join(vocabulary_path))
 
         self.save_json_word_map()
 
 
         try:
             self.word_map = self.load_json_word_map()
+            print("Vocabulary loaded successfully.")
         except Exception as e:
             print(e)
             print("No vocabulary file found or error loading it. Initializing existing base one.")
