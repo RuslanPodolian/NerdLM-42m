@@ -178,15 +178,21 @@ class Predictor:
         self.deep_transformer.eval()
 
     def predict(self, text):
-        sequences = []
         tokens = self.dataset_preparation.convert_line_to_tensor(text)
         out = self.deep_transformer(tokens)
         indices = torch.argmax(out[0], dim=1)[0] # second one in out is list like [[True, False], [False, False]], and indices have extrac brackets
 
+        output = []
+        word_map = self.dataset_preparation.vocabulary.word_map
         for index in indices:
-            sequences.append(self.dataset_preparation.vocabulary.idx_to_word[int(index)])
+            if index == word_map['<start>']:
+                pass
+            if index ==word_map['<end>']:
+                break
+            if index in word_map:
+                output.append(self.dataset_preparation.vocabulary.idx_to_word[index])
 
-        return sequences
+        return output
 
 
 if __name__ == "__main__":

@@ -13,10 +13,16 @@ class DatasetPreparation:
 
         self.vocabulary.add_word_per_line(tokens)
 
+        padding = lambda base_sequence: [self.vocabulary.word_map['<pad>'] for _ in range(self.vocabulary.max_length-len(base_sequence))]
+
         if target:
-            out_sequence = [self.vocabulary.word_map['<start>']] + [self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>']) for token in tokens] + [self.vocabulary.word_map['<end>']] + [self.vocabulary.word_map['<pad>'] for _ in range(self.vocabulary.max_length-len(tokens))]
+            base_sequence = [self.vocabulary.word_map['<start>']] + [self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>']) for token in tokens] + [self.vocabulary.word_map['<end>']]
+            padded_sequence = padding(base_sequence)
+            out_sequence = base_sequence + padded_sequence
         else:
-            out_sequence = [self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>']) for token in tokens] + [self.vocabulary.word_map['<pad>'] for _ in range(self.vocabulary.max_length-len(tokens))]
+            base_sequence = [self.vocabulary.word_map.get(token, self.vocabulary.word_map['<unk>']) for token in tokens]
+            padded_sequence = padding(base_sequence)
+            out_sequence = base_sequence + padded_sequence
 
         return torch.LongTensor(out_sequence)
 
@@ -36,7 +42,6 @@ class DatasetPreparation:
         path = self._validate_path(path)
         lines = self.vocabulary.load_lines_of_text_file(path)
         self.vocabulary.add_word_per_line(lines)
-        self.vocabulary.save_json_dump('./app/model/datasets/vocabulary.json')
 
         x = []
         y = []

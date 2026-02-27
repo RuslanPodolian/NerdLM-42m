@@ -61,6 +61,8 @@ async def answer(message: Message):
 
     output = model.generate_answer(message.text)
 
+    print(f"To user: {message.chat.username} Bot send {output}")
+
     await bot.send_message(message.chat.id, output)
 
 async def main():

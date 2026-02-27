@@ -78,11 +78,9 @@ class NerdLM:
         if not question:
             print("Please enter a question.")
 
-        sequences = self.predictor.predict(question)
-        
-        unpadded_sequences = self.dataset_preparation.remove_padding(sequences)
+        tokens = self.predictor.predict(question)
 
-        text = ''.join(unpadded_sequences)
+        text = ''.join(tokens)
 
         return text
 
