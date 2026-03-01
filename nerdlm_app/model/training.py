@@ -196,5 +196,5 @@ class Predictor:
 
 
 if __name__ == "__main__":
-    training = TrainingEvaluating('datasets/english_qa/extended_qa_dataset.txt', None)
+    training = TrainingEvaluating('datasets/extended_qa_dataset.txt', None)
     training.train(epochs=10)

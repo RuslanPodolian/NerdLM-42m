@@ -1,4 +1,4 @@
-with open('../datasets/english_qa/extended_qa_dataset.txt', 'r') as f:
+with open('../datasets/extended_qa_dataset.txt', 'r') as f:
     lines = f.readlines()
 
     for line in lines:
