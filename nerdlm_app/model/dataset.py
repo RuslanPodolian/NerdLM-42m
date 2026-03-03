@@ -49,7 +49,7 @@ class DatasetPreparation:
         for line in lines:
             if 'ans:' in line:
                 y.append(self.convert_line_to_tensor(line, target=True))
-            elif 'ques:' in line:
+            if 'ques:' in line:
                 x.append(self.convert_line_to_tensor(line, target=False))
 
         return x, y

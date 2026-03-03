@@ -15,26 +15,31 @@ class NerdLM:
         model_path = Path(saved_model_name)
         if device != 'cpu':
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
+            
+        self.path = path
+        self.vocab_size = None
+        self.path_obj = None
 
         if training:
-            if path is None:
-                raise ValueError("Dataset path is None. Provide a valid text file path for NerdLM.")
-            path_obj = Path(path)
-            if not path_obj.is_absolute():
-                path_obj = (PROJECT_ROOT / path_obj).resolve()
-            if path_obj.suffix.lower() != '.txt':
-                print("Sorry, only txt files are supported.")
+            if self.path is not None:
+                # raise ValueError("Dataset path is None. Provide a valid text file path for NerdLM.")
+                self.path_obj = Path(self.path)
+                if not self.path_obj.is_absolute():
+                    self.path_obj = (PROJECT_ROOT / self.path_obj).resolve()
+                if self.path_obj.suffix.lower() != '.txt':
+                    print("Sorry, only txt files are supported.")
+    
+                if not model_path.is_absolute():
+                    model_path = (PROJECT_ROOT / model_path).resolve()
+    
+                self.vocab_size = CustomDataset(str(self.path_obj)).get_word_map()
 
-            if not model_path.is_absolute():
-                model_path = (PROJECT_ROOT / model_path).resolve()
-
-            vocab_size = CustomDataset(str(path_obj)).get_word_map()
             self.model = DeepTransformer(
                 d_model=512,
                 d_ff=2048,
                 num_heads=8,
                 num_layers_gru=2,
-                vocab_size=vocab_size,
+                vocab_size=self.vocab_size,
                 device=device
             )
             if saved_model and model_path.is_file():
@@ -48,9 +53,9 @@ class NerdLM:
             elif saved_model:
                 print(f"Saved model not found at '{model_path}'. Initializing a new model.")
 
-            self.training = TrainingEvaluating(str(path_obj), test_path, device=device)
+            self.training = TrainingEvaluating(str(self.path_obj), test_path, device=device)
 
-            self.custom_dataset = CustomDataset(str(path_obj))
+            self.custom_dataset = CustomDataset(str(self.path_obj))
             self.word_map = self.custom_dataset.get_word_map()
 
         if inference:
@@ -63,7 +68,10 @@ class NerdLM:
             self.training.save_model(save_path)
 
     def large_train(self, paths: list, epochs=10, save_model: bool = True, save_path: str ='nerdlm.pt'):
-        for path in paths:
+        len_paths = len(paths)
+        for i, path in enumerate(paths):
+            self.path = path
+            print(f"Dataset: {path}, count: [{i}/{len_paths}]")
             print("-"*15, f"Training on: {path}", "-"*15)
             self.training = TrainingEvaluating(path, test_path=None)
             self.training.train(epochs=epochs)
@@ -74,19 +82,22 @@ class NerdLM:
             self.training.save_model(save_path)
 
 
-    def generate_answer(self, question):
+    def generate_answer(self, question, convert_indices_to_words=True):
         if not question:
             print("Please enter a question.")
 
-        tokens = self.predictor.predict(question)
+        tokens = self.predictor.predict(question, convert_to_text=convert_indices_to_words)
 
-        text = ''.join(tokens)
+        if not convert_indices_to_words:
+            return tokens
+        else:
+            text = ''.join(tokens)
 
-        return text
+            return text
 
 if __name__ == "__main__":
-    bot = NerdLM('nerdlm_app/model/datasets/english_qa/extended_qa_dataset.txt', training=True, inference=False)
-    data_dir = './nerdlm_app/model/datasets/english_qa/'
+    bot = NerdLM('./nerdlm_app/model/datasets/english_extended_qa.txt', training=True, inference=False) # Paste any random dataset path
+    data_dir = './nerdlm_app/model/datasets/'
     files = glob.glob(os.path.join(data_dir, '*.txt'))
 
     print(files)
