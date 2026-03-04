@@ -121,7 +121,7 @@ class TrainingEvaluating:
                 sum_loss += loss.item()
                 count += 1
 
-            print(f"Epoch: {epoch}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
+            print(f"Epoch: {epoch+1}/{epochs}; Current Loss: {loss.item()}; Total Loss: {sum_loss/count}")
 
         print("Training completed...")
 
