@@ -59,7 +59,7 @@ async def answer(message: Message):
         vocab_path.parent.mkdir(parents=True, exist_ok=True)
         vocab.save_json_dump(str(vocab_path))
 
-    output = model.generate_answer(message.text)
+    output = model.generate_answer(message.text, convert_indices_to_words=True)
 
     print(f"To user: {message.chat.username} Bot send {output}")
 

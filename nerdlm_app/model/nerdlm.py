@@ -11,7 +11,7 @@ from nerdlm_app.model.vocabulary import Vocabulary
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 class NerdLM:
-    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='../../nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
+    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
         model_path = Path(saved_model_name)
         if device != 'cpu':
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -65,7 +65,7 @@ class NerdLM:
     def train(self, epochs=10, save_model: bool = True, save_path: str ='nerdlm.pt'):
         self.training.train(epochs=epochs)
         if save_model:
-            self.training.save_model(save_path)
+            self.training.save_model(self.model, save_path)
 
     def large_train(self, paths: list, epochs=10, save_model: bool = True, save_path: str ='nerdlm.pt'):
         len_paths = len(paths)
@@ -79,7 +79,7 @@ class NerdLM:
             print("-"*50)
 
         if save_model:
-            self.training.save_model(save_path)
+            self.training.save_model(self.model, save_path)
 
 
     def generate_answer(self, question, convert_indices_to_words=True):
@@ -88,12 +88,14 @@ class NerdLM:
 
         tokens = self.predictor.predict(question, convert_to_text=convert_indices_to_words)
 
-        if not convert_indices_to_words:
-            return tokens
-        else:
+        if convert_indices_to_words:
             text = ''.join(tokens)
+        else:
+            text = tokens
 
-            return text
+        print(f"Answer: {text}")
+
+        return text
 
 if __name__ == "__main__":
     bot = NerdLM('./nerdlm_app/model/datasets/english_extended_qa.txt', training=True, inference=False) # Paste any random dataset path

@@ -67,7 +67,7 @@ class LossWithLS(nn.Module):
         return loss
 
 class TrainingEvaluating:
-    def __init__(self, path, test_path, device='cpu'):
+    def __init__(self, path, test_path, saved_model=True, saved_model_name='nerdlm_app/nerdlm.pt', device='cpu'):
         if device != 'cpu' and torch.cuda.is_available():
             device = 'cuda'
         else:
@@ -79,18 +79,35 @@ class TrainingEvaluating:
             self.test_dataset = self.custom_dataset
         else:
             self.test_dataset = CustomDataset(test_path)
+
+        self.vocab_size = self.custom_dataset.get_word_map()
         self.custom_dataloader = DataLoader(self.custom_dataset, batch_size=32, shuffle=True)
         self.test_dataloader = DataLoader(self.test_dataset, batch_size=32)
 
-        self.deep_transformer = DeepTransformer(
+        model_path = Path(saved_model_name)
+
+        self.model = DeepTransformer(
             d_model=512,
+            d_ff=2048,
             num_heads=8,
             num_layers_gru=2,
-            vocab_size=self.custom_dataset.get_word_map(),
-            d_ff=2048,
-            dropout_rate=0.1,
-            device=device,
-        ).to(device)
+            vocab_size=self.vocab_size,
+            device=device
+        )
+        if saved_model and model_path.is_file():
+            if model_path.stat().st_size == 0:
+                print(f"Saved model file is empty at '{model_path}'. Initializing a new model.")
+            else:
+                try:
+                    self.model.load_state_dict(torch.load(str(model_path), map_location=device))
+                except (EOFError, RuntimeError, ValueError) as exc:
+                    print(f"Failed to load saved model at '{model_path}': {exc}. Initializing a new model.")
+        elif saved_model:
+            print(f"Saved model not found at '{model_path}'. Initializing a new model.")
+
+        self.deep_transformer = self.model
+
+
         self.adam_optimizer = optim.Adam(self.deep_transformer.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9)
         self.transformer_optimizer = AdamWarmup(self.deep_transformer.d_model, warmup_steps=4000, optimizer=self.adam_optimizer)
         self.criterion = LossWithLS(self.custom_dataset.get_word_map(), smooth=0.1)
@@ -125,8 +142,8 @@ class TrainingEvaluating:
 
         print("Training completed...")
 
-    def save_model(self, path):
-        torch.save(self.deep_transformer.state_dict(), path)
+    def save_model(self, model: nn.Module, path):
+        torch.save(model.state_dict(), path)
         print("Model saved")
 
     def evaluate(self):
@@ -186,18 +203,18 @@ class Predictor:
             output = []
             word_map = self.dataset_preparation.vocabulary.word_map
             for index in indices:
-                if index == word_map['<start>']:
+                if index == word_map['<start>'] or index == word_map['<pad>']:
                     pass
                 if index == word_map['<end>']:
                     break
-                if index in word_map:
-                    output.append(self.dataset_preparation.vocabulary.idx_to_word[index])
-
-        output = indices
+                if index in word_map.values():
+                    output.append(self.dataset_preparation.vocabulary.idx_to_word[int(index)])
+        else:
+            output = indices
 
         return output
 
 
 if __name__ == "__main__":
-    training = TrainingEvaluating('datasets/extended_qa_dataset.txt', None)
+    training = TrainingEvaluating('datasets/english_extended_qa.txt', None)
     training.train(epochs=10)
