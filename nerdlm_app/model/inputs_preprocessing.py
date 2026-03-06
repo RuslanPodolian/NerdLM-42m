@@ -18,9 +18,10 @@ class PositionalEncoding(nn.Module):
         self.max_length = max_length
 
     def forward(self, x):
-        pe = torch.zeros(self.max_length, self.d_model)
-        pos = torch.arange(0, self.max_length, dtype=torch.float32).unsqueeze(1).to(torch.int64)
-        i = torch.arange(0, self.d_model, 2, dtype=torch.float32).unsqueeze(0).to(torch.int64)
+        device = x.device
+        pe = torch.zeros(self.max_length, self.d_model, device=device)
+        pos = torch.arange(0, self.max_length, dtype=torch.float32, device=device).unsqueeze(1).to(torch.int64)
+        i = torch.arange(0, self.d_model, 2, dtype=torch.float32, device=device).unsqueeze(0).to(torch.int64)
         pe[pos, i] = torch.sin(pos / 10000 ** (i / self.d_model))
         pe[pos, i + 1] = torch.cos(pos / 10000 ** ((i + 1) / self.d_model))
 
