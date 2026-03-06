@@ -22,7 +22,7 @@ class MultiHeadAttention(nn.Module):
         key = self.key(key).view(batch_size, -1, self.num_heads, self.d_k).transpose(1, 2)
         value = self.value(value).view(batch_size, -1, self.num_heads, self.d_k).transpose(1, 2)
 
-        scores = torch.matmul(query, key.transpose(-2, -1)) / torch.sqrt(torch.tensor(self.d_k, dtype=torch.float32))
+        scores = torch.matmul(query, key.transpose(-2, -1)) / torch.sqrt(torch.tensor(self.d_k, dtype=torch.float32, device=query.device))
 
         if mask is not None:
             scores = scores.transpose(0, 1).masked_fill(mask == 0, -1e9).transpose(0, 1)
@@ -63,8 +63,8 @@ class DeepMultiHeadAttention(nn.Module):
         k_g = k_g.view(batch_size, -1, self.num_heads, self.d_k)
         v_g = v_g.view(batch_size, -1, self.num_heads, self.d_k)
 
-        attn1 = F.softmax(q_g*k_g, dim=-1) / torch.sqrt(torch.tensor(self.d_k, dtype=torch.float32))
-        attn2 = F.softmax(q_g*v_g, dim=-1) / torch.sqrt(torch.tensor(self.d_k, dtype=torch.float32))
+        attn1 = F.softmax(q_g*k_g, dim=-1) / torch.sqrt(torch.tensor(self.d_k, dtype=torch.float32, device=query.device))
+        attn2 = F.softmax(q_g*v_g, dim=-1) / torch.sqrt(torch.tensor(self.d_k, dtype=torch.float32, device=query.device))
         double_attention = self.dropout(attn1*attn2)
 
         if mask is not None:

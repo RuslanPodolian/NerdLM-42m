@@ -9,7 +9,7 @@ class Embedding(nn.Module):
         self.embedding = nn.Embedding(vocab_size, d_model)
 
     def forward(self, x):
-        return self.embedding(x) * torch.sqrt(torch.tensor(self.d_model))
+        return self.embedding(x) * torch.sqrt(torch.tensor(self.d_model, device=x.device))
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model: int, max_length: int = 256):
@@ -39,7 +39,7 @@ class InputPreprocessing(nn.Module):
         self.positional_encoding = PositionalEncoding(d_model, max_length).to(device)
     
     def subsequent_mask(self, size):
-        return torch.triu(torch.ones(size, size)).transpose(0, 1).type(torch.uint8).unsqueeze(0)
+        return torch.triu(torch.ones(size, size, device=self.device)).transpose(0, 1).type(torch.uint8).unsqueeze(0)
 
     def create_mask(self, token_ids):
         x_mask = token_ids != 0
