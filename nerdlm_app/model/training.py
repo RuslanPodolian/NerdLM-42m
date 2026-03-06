@@ -161,8 +161,10 @@ class TrainingEvaluating:
                 loss = self.criterion(predictions, y)
                 indices = torch.argmax(predictions, dim=-1)
 
-                for index in indices:
-                    sequences.append(self.custom_dataset.get_word_map()[index])
+                idx_to_word = self.custom_dataset.dataset_preparation.idx_to_word
+                for seq in indices:
+                    words = [idx_to_word.get(int(token_id), '<unk>') for token_id in seq]
+                    sequences.append(words)
                 sum_loss += loss.item()
                 logging.info(f"Test Loss: {sum_loss/len(sequences)}")
 
