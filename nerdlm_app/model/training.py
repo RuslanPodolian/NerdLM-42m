@@ -67,8 +67,8 @@ class LossWithLS(nn.Module):
         return loss
 
 class TrainingEvaluating:
-    def __init__(self, path, test_path, saved_model=True, saved_model_name='nerdlm_app/nerdlm.pt', device='cpu'):
-        if device != 'cpu' and torch.cuda.is_available():
+    def __init__(self, path, test_path, saved_model=True, saved_model_name='nerdlm_app/nerdlm.pt'):
+        if torch.cuda.is_available():
             device = 'cuda'
         else:
             device = 'cpu'

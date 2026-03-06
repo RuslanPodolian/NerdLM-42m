@@ -11,10 +11,9 @@ from nerdlm_app.model.vocabulary import Vocabulary
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 class NerdLM:
-    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='nerdlm.pt', training: bool = False, inference: bool = True, device='cpu'):
+    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='nerdlm.pt', training: bool = False, inference: bool = True):
         model_path = Path(saved_model_name)
-        if device != 'cpu':
-            device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
             
         self.path = path
         self.vocab_size = None
