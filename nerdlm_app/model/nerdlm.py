@@ -52,7 +52,7 @@ class NerdLM:
             elif saved_model:
                 print(f"Saved model not found at '{model_path}'. Initializing a new model.")
 
-            self.training = TrainingEvaluating(str(self.path_obj), test_path, device=device)
+            self.training = TrainingEvaluating(str(self.path_obj), test_path)
 
             self.custom_dataset = CustomDataset(str(self.path_obj))
             self.word_map = self.custom_dataset.get_word_map()
