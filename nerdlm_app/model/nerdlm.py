@@ -76,8 +76,8 @@ class NerdLM:
             print(f"{path} training complete. Metrics: {self.training.evaluate()}")
             print("-"*50)
 
-        if save_model:
-            self.training.save_model(self.model, save_path)
+            if save_model:
+                self.training.save_model(self.model, save_path)
 
 
     def generate_answer(self, question, convert_indices_to_words=True):
