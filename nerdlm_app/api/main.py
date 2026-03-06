@@ -20,7 +20,7 @@ dotenv.load_dotenv(env_path)
 token = os.getenv("TG_BOT_TOKEN")
 
 model_path = Path(
-    os.getenv("NERDLM_MODEL_PATH", str(PROJECT_ROOT  / "nerdlm.pt"))
+    os.getenv("NERDLM_MODEL_PATH", str(PROJECT_ROOT  / 'nerdlm_app' / "nerdlm.pt"))
 )
 vocab_path = Path(
     os.getenv("NERDLM_VOCAB_PATH", str(PROJECT_ROOT / "nerdlm_app" / "model" / "datasets" / "vocabulary.json"))

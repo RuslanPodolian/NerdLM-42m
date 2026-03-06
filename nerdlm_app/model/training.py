@@ -204,10 +204,11 @@ class Predictor:
             output = []
             word_map = self.dataset_preparation.vocabulary.word_map
             for index in indices:
-                if index == word_map['<start>'] or index == word_map['<pad>']:
-                    pass
+                if index in [word_map['<start>'], word_map['<pad>'], word_map['<unk>']]:
+                    continue
                 if index == word_map['<end>']:
                     break
+
                 if index in word_map.values():
                     output.append(self.dataset_preparation.vocabulary.idx_to_word[int(index)])
         else:
