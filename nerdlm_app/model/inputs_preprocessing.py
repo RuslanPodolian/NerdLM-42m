@@ -32,8 +32,10 @@ class PositionalEncoding(nn.Module):
 class InputPreprocessing(nn.Module):
     def __init__(self, d_model: int, vocab_size: int, max_length: int = 256):
         super(InputPreprocessing, self).__init__()
-        self.embedding = Embedding(vocab_size, d_model)
-        self.positional_encoding = PositionalEncoding(d_model, max_length)
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = device
+        self.embedding = Embedding(vocab_size, d_model).to(device)
+        self.positional_encoding = PositionalEncoding(d_model, max_length).to(device)
     
     def subsequent_mask(self, size):
         return torch.triu(torch.ones(size, size)).transpose(0, 1).type(torch.uint8).unsqueeze(0)
