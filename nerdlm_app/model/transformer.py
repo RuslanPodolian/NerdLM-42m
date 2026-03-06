@@ -33,7 +33,7 @@ class MultiHeadAttention(nn.Module):
         return output
 
 class DeepMultiHeadAttention(nn.Module): 
-    def __init__(self, d_model: int, num_heads, num_layers: int, dropout_rate: float = 0.1, device='cuda'):
+    def __init__(self, d_model: int, num_heads, num_layers: int, dropout_rate: float = 0.1,):
         super(DeepMultiHeadAttention, self).__init__()
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.d_model = d_model
@@ -90,14 +90,14 @@ class FeedForward(nn.Module):
         return self.fc2(self.dropout(F.relu(self.fc1(x))))
 
 class DeepTransformer(nn.Module):
-    def __init__(self, d_model: int, num_heads: int, num_layers_gru: int, vocab_size: int, d_ff: int = 2048, dropout_rate: float = 0.1, device='cpu'):
+    def __init__(self, d_model: int, num_heads: int, num_layers_gru: int, vocab_size: int, d_ff: int = 2048, dropout_rate: float = 0.1,):
         super(DeepTransformer, self).__init__()
-        self.device = device
+        self.device = device = "cuda" if torch.cuda.is_available() else "cpu"
         self.d_model = d_model
         self.num_heads = num_heads
-        self.input_preprocessing = InputPreprocessing(d_model, vocab_size)
+        self.input_preprocessing = InputPreprocessing(d_model, vocab_size).to(device)
         self.fc = nn.Linear(d_model, vocab_size)
-        self.deep_multi_head_attention = DeepMultiHeadAttention(d_model, num_heads, num_layers_gru, dropout_rate, device)
+        self.deep_multi_head_attention = DeepMultiHeadAttention(d_model, num_heads, num_layers_gru, dropout_rate)
         self.multi_head_attention = MultiHeadAttention(d_model, num_heads, dropout_rate, device)
         self.feed_forward = FeedForward(d_model, d_ff, dropout_rate)
         self.norm1 = nn.LayerNorm(d_model, eps=1e-6)
