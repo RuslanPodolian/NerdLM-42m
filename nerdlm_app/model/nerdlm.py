@@ -46,8 +46,15 @@ class NerdLM:
                 else:
                     try:
                         self.model.load_state_dict(torch.load(str(model_path), map_location=device))
+                        print(f"Successfully loaded saved model from '{model_path}'.")
                     except (EOFError, RuntimeError, ValueError) as exc:
                         print(f"Failed to load saved model at '{model_path}': {exc}. Initializing a new model.")
+            elif saved_model:
+                print(f"Saved model not found at '{model_path}'. Initializing a new model.")
+                try:
+                    self.model.load_state_dict(torch.load(str(model_path), map_location=device))
+                except (EOFError, RuntimeError, ValueError) as exc:
+                    print(f"Failed to load saved model at '{model_path}': {exc}. Initializing a new model.")
             elif saved_model:
                 print(f"Saved model not found at '{model_path}'. Initializing a new model.")
 
