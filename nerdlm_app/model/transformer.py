@@ -97,16 +97,16 @@ class DeepTransformer(nn.Module):
         self.num_heads = num_heads
         self.input_preprocessing = InputPreprocessing(d_model, vocab_size).to(device)
         self.fc = nn.Linear(d_model, vocab_size)
-        self.deep_multi_head_attention = DeepMultiHeadAttention(d_model, num_heads, num_layers_gru, dropout_rate)
-        self.multi_head_attention = MultiHeadAttention(d_model, num_heads, dropout_rate, device)
-        self.feed_forward = FeedForward(d_model, d_ff, dropout_rate)
-        self.norm1 = nn.LayerNorm(d_model, eps=1e-6)
-        self.norm2 = nn.LayerNorm(d_model, eps=1e-6)
-        self.norm3 = nn.LayerNorm(d_model, eps=1e-6)
+        self.deep_multi_head_attention = DeepMultiHeadAttention(d_model, num_heads, num_layers_gru, dropout_rate).to(device)
+        self.multi_head_attention = MultiHeadAttention(d_model, num_heads, dropout_rate, device).to(device)
+        self.feed_forward = FeedForward(d_model, d_ff, dropout_rate).to(device)
+        self.norm1 = nn.LayerNorm(d_model, eps=1e-6).to(device)
+        self.norm2 = nn.LayerNorm(d_model, eps=1e-6).to(device)
+        self.norm3 = nn.LayerNorm(d_model, eps=1e-6).to(device)
         self.dropout = nn.Dropout(dropout_rate)
 
     def forward(self, tgt):
-        x, x_mask = self.input_preprocessing(tgt)
+        x, x_mask = self.input_preprocessing(tgt.to(self.device))
         x1 = self.multi_head_attention(x, x, x, None)
         x2 = self.multi_head_attention(x, x, x, x_mask)
         x = self.norm1(self.dropout(x1*x2 + x) + x)
