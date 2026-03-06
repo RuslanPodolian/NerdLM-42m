@@ -38,8 +38,7 @@ class NerdLM:
                 d_ff=2048,
                 num_heads=8,
                 num_layers_gru=2,
-                vocab_size=self.vocab_size,
-                device=device
+                vocab_size=self.vocab_size
             )
             if saved_model and model_path.is_file():
                 if model_path.stat().st_size == 0:
