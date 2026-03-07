@@ -106,5 +106,5 @@ if __name__ == "__main__":
     files = glob.glob(os.path.join(data_dir, '*.txt'))
 
     print(files)
-    bot.large_train(files, epochs=1)
+    bot.large_train(files, epochs=30)
     # bot.train(epochs=100)
