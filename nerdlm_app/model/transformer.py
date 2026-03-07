@@ -106,9 +106,10 @@ class DeepTransformer(nn.Module):
         self.dropout = nn.Dropout(dropout_rate).to(device)
 
     def forward(self, tgt, previous_tgt: list[torch.Tensor] = None):
-        if len(previous_tgt) > 0 or previous_tgt:
-            previous_tgt = torch.cat(previous_tgt, dim=1)
-            tgt = torch.cat((previous_tgt, tgt), dim=1)
+        if previous_tgt:
+            if len(previous_tgt) > 0:
+                previous_tgt = torch.cat(previous_tgt, dim=1)
+                tgt = torch.cat((previous_tgt, tgt), dim=1)
         x, x_mask = self.input_preprocessing(tgt.to(self.device))
         x1 = self.multi_head_attention(x, x, x, None)
         x2 = self.multi_head_attention(x, x, x, x_mask)
