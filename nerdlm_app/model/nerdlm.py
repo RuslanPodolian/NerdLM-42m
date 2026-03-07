@@ -21,6 +21,8 @@ class NerdLM:
         self.model_path = model_path
         self.vocab_size = None
         self.path_obj = None
+        self.training = None
+
 
         if training:
             if self.path is not None:
@@ -31,6 +33,12 @@ class NerdLM:
                     print("Sorry, only txt files are supported.")
 
                 self.vocab_size = CustomDataset(str(self.path_obj)).get_word_map()
+
+            self.training = TrainingEvaluating(str(self.path_obj), test_path)
+
+            self.custom_dataset = CustomDataset(str(self.path_obj))
+            self.word_map = self.custom_dataset.dataset_preparation.vocabulary.word_map
+            self.vocab_size = self.custom_dataset.get_word_map()
 
             self.model = DeepTransformer(
                 d_model=512,
@@ -52,10 +60,6 @@ class NerdLM:
             elif saved_model:
                 print(f"Saved model not found at '{model_path}'. Initializing a new model.")
 
-            self.training = TrainingEvaluating(str(self.path_obj), test_path)
-
-            self.custom_dataset = CustomDataset(str(self.path_obj))
-            self.word_map = self.custom_dataset.get_word_map()
 
         if inference:
             self.predictor = Predictor(model_path)
