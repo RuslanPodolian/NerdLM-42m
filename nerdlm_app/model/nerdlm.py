@@ -74,7 +74,7 @@ class NerdLM:
             print("-"*15, f"Training on: {path}", "-"*15)
             self.training = TrainingEvaluating(path, test_path=None)
             self.training.train(epochs=epochs)
-            print(f"{path} training complete. Metrics: {self.training.evaluate()}")
+            # print(f"{path} training complete. Metrics: {self.training.evaluate()}")
             print("-"*50)
 
             if save_model:
@@ -102,5 +102,5 @@ if __name__ == "__main__":
     files = glob.glob(os.path.join(data_dir, '*.txt'))
 
     print(files)
-    bot.large_train(files, epochs=30)
+    bot.large_train(files, epochs=1)
     # bot.train(epochs=100)
