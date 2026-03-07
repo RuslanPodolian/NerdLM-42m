@@ -1,6 +1,7 @@
 from nerdlm_app.model.transformer import DeepTransformer
 from nerdlm_app.model.dataset import CustomDataset, DatasetPreparation
-from nerdlm_app.model.training import TrainingEvaluating, Predictor
+from nerdlm_app.model.training import TrainingEvaluating
+
 import torch
 from pathlib import Path
 import glob
@@ -19,7 +20,6 @@ class NerdLM:
 
         self.path = path
         self.model_path = model_path
-        self.vocab_size = None
         self.path_obj = None
         self.training = None
 
@@ -38,7 +38,7 @@ class NerdLM:
 
             self.custom_dataset = CustomDataset(str(self.path_obj))
             self.word_map = self.custom_dataset.dataset_preparation.vocabulary.word_map
-            self.vocab_size = self.custom_dataset.get_word_map()
+            print(f"Vocabulary size: {self.vocab_size}")
 
             self.model = DeepTransformer(
                 d_model=512,
@@ -53,7 +53,12 @@ class NerdLM:
                     self.model_path = model_path
                 else:
                     try:
-                        self.model.load_state_dict(torch.load(str(model_path), map_location=device))
+                        state_dict = torch.load(str(model_path), map_location=device)
+                        saved_vocab = state_dict['fc.bias'].shape[0]
+                        if saved_vocab != self.vocab_size:
+                            self.vocab_size = saved_vocab
+                            self.model = DeepTransformer(d_model=512, d_ff=2048, num_heads=8, num_layers_gru=2, vocab_size=saved_vocab)
+                        self.model.load_state_dict(state_dict)
                         print(f"Successfully loaded saved model from '{model_path}'.")
                     except (EOFError, RuntimeError, ValueError) as exc:
                         print(f"Failed to load saved model at '{model_path}': {exc}. Initializing a new model.")
@@ -62,7 +67,7 @@ class NerdLM:
 
 
         if inference:
-            self.predictor = Predictor(model_path)
+            self.predictor = TrainingEvaluating(path=path, saved_model_name=model_path, training=False)
         self.dataset_preparation = DatasetPreparation()
 
     def train(self, epochs=10, save_model: bool = True):
@@ -85,11 +90,11 @@ class NerdLM:
                 self.training.save_model(self.model, self.model_path)
 
 
-    def generate_answer(self, question, convert_indices_to_words=True):
+    def generate_answer(self, question, previous_questions: list, convert_indices_to_words=True):
         if not question:
             print("Please enter a question.")
 
-        tokens = self.predictor.predict(question, convert_to_text=convert_indices_to_words)
+        tokens = self.predictor.predict(question, context=previous_questions, convert_to_text=convert_indices_to_words)
 
         if convert_indices_to_words:
             text = ' '.join(tokens)

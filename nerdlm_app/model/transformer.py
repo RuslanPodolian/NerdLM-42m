@@ -105,7 +105,10 @@ class DeepTransformer(nn.Module):
         self.norm3 = nn.LayerNorm(d_model, eps=1e-6).to(device)
         self.dropout = nn.Dropout(dropout_rate).to(device)
 
-    def forward(self, tgt):
+    def forward(self, tgt, previous_tgt: list[torch.Tensor] = None):
+        if len(previous_tgt) > 0 or previous_tgt:
+            previous_tgt = torch.cat(previous_tgt, dim=1)
+            tgt = torch.cat((previous_tgt, tgt), dim=1)
         x, x_mask = self.input_preprocessing(tgt.to(self.device))
         x1 = self.multi_head_attention(x, x, x, None)
         x2 = self.multi_head_attention(x, x, x, x_mask)

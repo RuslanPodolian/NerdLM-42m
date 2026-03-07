@@ -1,4 +1,6 @@
-from aiogram import Bot, Dispatcher
+from email import message_from_binary_file
+
+from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
@@ -27,7 +29,7 @@ vocab_path = Path(
 )
 enable_vocab_update = os.getenv("ENABLE_VOCAB_UPDATE", "0") == "1"
 
-model = NerdLM(saved_model=True, saved_model_name=str(model_path), inference=True, training=False)
+model = NerdLM(path='./nerdlm_app/model/datasets/english_extended_qa.txt', saved_model=True, saved_model_name=str(model_path), inference=True, training=False)
 vocab = Vocabulary()
 
 if not token:
@@ -40,6 +42,8 @@ bot = Bot(token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 dp = Dispatcher()
 
+chat_requests = []
+
 @dp.message(CommandStart())
 async def start_command(message: Message):
     await bot.send_message(message.chat.id, f'Hello, {message.from_user.username}, it\'s NerdLM bot! Ask anything you want and get fast answer!')
@@ -49,7 +53,7 @@ async def start_command(message: Message):
 async def chat_command(message: Message):
     await bot.send_message(message.chat.id, f'Chat with me! Just type your question and I will answer it!')
 
-@dp.message()
+@dp.message(F.text)
 async def answer(message: Message):
     # In inference, avoid mutating/creating datasets unless explicitly enabled.
     if enable_vocab_update:
@@ -59,7 +63,21 @@ async def answer(message: Message):
         vocab_path.parent.mkdir(parents=True, exist_ok=True)
         vocab.save_json_dump(str(vocab_path))
 
-    output = model.generate_answer(message.text, convert_indices_to_words=True)
+    try:
+        user_requests = []
+        if len(chat_requests) == 0:
+            for request in chat_requests:
+                for user_message, user_id in request.items():
+                    if user_id == message.from_user.id:
+                        user_requests.append(user_message)
+
+        output = model.generate_answer(message.text, previous_questions=user_requests, convert_indices_to_words=True)
+    except Exception as e:
+        output = "Something went wrong. Try another prompt."
+        await bot.send_message(message.chat.id, output)
+        raise e
+
+    chat_requests.append({message.text: message.from_user.id})
 
     print(f"From user: {message.from_user.username} Bot send {message.text}")
     print(f"To user: {message.chat.username} Bot send {output}")

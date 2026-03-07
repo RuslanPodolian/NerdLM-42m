@@ -9,6 +9,8 @@ from pathlib import Path
 
 import logging
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 class AdamWarmup:
     def __init__(self, model_size, warmup_steps, optimizer):
         self.model_size = model_size
@@ -67,24 +69,34 @@ class LossWithLS(nn.Module):
         return loss
 
 class TrainingEvaluating:
-    def __init__(self, path, test_path, saved_model=True, saved_model_name='nerdlm_app/nerdlm.pt'):
+    def __init__(self, path=None, test_path=None, saved_model=True, saved_model_name='nerdlm_app/nerdlm.pt', training=True):
         if torch.cuda.is_available():
             device = 'cuda'
         else:
             device = 'cpu'
         self.device = device
 
-        self.custom_dataset = CustomDataset(path)
-        if test_path is None:
-            self.test_dataset = self.custom_dataset
-        else:
-            self.test_dataset = CustomDataset(test_path)
+        self.dataset_preparation = DatasetPreparation()
+        self.vocab_size = len(self.dataset_preparation.vocabulary.word_map)
 
-        self.vocab_size = self.custom_dataset.get_word_map()
-        self.custom_dataloader = DataLoader(self.custom_dataset, batch_size=32, shuffle=True)
-        self.test_dataloader = DataLoader(self.test_dataset, batch_size=32)
+        if training:
+            self.path = path
 
-        model_path = Path(saved_model_name)
+            self.path_obj = Path(self.path)
+            if not self.path_obj.is_absolute():
+                self.path_obj = (PROJECT_ROOT / self.path_obj).resolve()
+            if self.path_obj.suffix.lower() != '.txt':
+                print("Sorry, only txt files are supported.")
+
+            self.custom_dataset = CustomDataset(str(self.path_obj))
+            if test_path is None:
+                self.test_dataset = self.custom_dataset
+            else:
+                self.test_dataset = CustomDataset(test_path)
+
+            self.vocab_size = self.custom_dataset.get_word_map()
+            self.custom_dataloader = DataLoader(self.custom_dataset, batch_size=32, shuffle=True)
+            self.test_dataloader = DataLoader(self.test_dataset, batch_size=32)
 
         self.model = DeepTransformer(
             d_model=512,
@@ -93,23 +105,37 @@ class TrainingEvaluating:
             num_layers_gru=2,
             vocab_size=self.vocab_size
         )
-        if saved_model and model_path.is_file():
-            if model_path.stat().st_size == 0:
-                print(f"Saved model file is empty at '{model_path}'. Initializing a new model.")
-            else:
-                try:
-                    self.model.load_state_dict(torch.load(str(model_path), map_location=device))
-                except (EOFError, RuntimeError, ValueError) as exc:
-                    print(f"Failed to load saved model at '{model_path}': {exc}. Initializing a new model.")
-        elif saved_model:
-            print(f"Saved model not found at '{model_path}'. Initializing a new model.")
-
         self.deep_transformer = self.model
 
+        if saved_model_name:
+            model_path = Path(saved_model_name)
+            if not model_path.is_absolute():
+                model_path = (Path(__file__).resolve().parents[2] / model_path).resolve()
+            if model_path.is_file():
+                if model_path.stat().st_size == 0:
+                    logging.warning(f"Saved model file is empty at '{model_path}'. Using an untrained model.")
+                else:
+                    try:
+                        state_dict = torch.load(str(model_path), map_location=device)
+                        saved_vocab = state_dict['fc.bias'].shape[0]
+                        if saved_vocab != self.vocab_size:
+                            self.vocab_size = saved_vocab
+                            self.model = DeepTransformer(d_model=512, d_ff=2048, num_heads=8, num_layers_gru=2, vocab_size=saved_vocab)
+                            self.deep_transformer = self.model
+                        self.deep_transformer.load_state_dict(state_dict)
+                    except (EOFError, RuntimeError, ValueError) as exc:
+                        logging.warning(
+                            f"Failed to load saved model at '{model_path}': {exc}. Using an untrained model."
+                        )
+            else:
+                logging.warning(f"Saved model not found at '{model_path}'. Using an untrained model.")
 
-        self.adam_optimizer = optim.Adam(self.deep_transformer.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9)
-        self.transformer_optimizer = AdamWarmup(self.deep_transformer.d_model, warmup_steps=4000, optimizer=self.adam_optimizer)
-        self.criterion = LossWithLS(self.custom_dataset.get_word_map(), smooth=0.1)
+        if training:
+            self.adam_optimizer = optim.Adam(self.deep_transformer.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9)
+            self.transformer_optimizer = AdamWarmup(self.deep_transformer.d_model, warmup_steps=4000, optimizer=self.adam_optimizer)
+            self.criterion = LossWithLS(self.custom_dataset.get_word_map(), smooth=0.1)
+        else:
+            self.deep_transformer.eval()
 
     def train(self, epochs):
         sum_loss = 0
@@ -170,32 +196,15 @@ class TrainingEvaluating:
 
         return sequences
 
-class Predictor:
-    def __init__(self, saved_model_path):
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        self.deep_transformer = DeepTransformer(d_model=512, num_heads=8, num_layers_gru=2, vocab_size=10000).to(device)
-        if saved_model_path:
-            model_path = Path(saved_model_path)
-            if not model_path.is_absolute():
-                model_path = (Path(__file__).resolve().parents[2] / model_path).resolve()
-            if model_path.is_file():
-                if model_path.stat().st_size == 0:
-                    logging.warning(f"Saved model file is empty at '{model_path}'. Using an untrained model.")
-                else:
-                    try:
-                        self.deep_transformer.load_state_dict(torch.load(str(model_path), map_location=device))
-                    except (EOFError, RuntimeError, ValueError) as exc:
-                        logging.warning(
-                            f"Failed to load saved model at '{model_path}': {exc}. Using an untrained model."
-                        )
-            else:
-                logging.warning(f"Saved model not found at '{model_path}'. Using an untrained model.")
-        self.dataset_preparation = DatasetPreparation()
-        self.deep_transformer.eval()
-
-    def predict(self, text, convert_to_text=False):
+    def predict(self, text, context: list, convert_to_text=True):
         tokens = self.dataset_preparation.convert_line_to_tensor(text)
-        out = self.deep_transformer(tokens)
+
+        model_context = []
+        for sentence in context:
+            context = self.dataset_preparation.convert_line_to_tensor(sentence)
+            model_context.append(context)
+
+        out = self.deep_transformer(tokens, model_context)
         indices = torch.argmax(out[0], dim=1)[0] # second one in out is list like [[True, False], [False, False]], and indices have extrac brackets
 
         if convert_to_text:
@@ -205,7 +214,10 @@ class Predictor:
                 if index in [word_map['<start>'], word_map['<pad>'], word_map['<unk>']]:
                     continue
                 elif index == word_map['<end>']:
-                    break
+                    if len(indices.data) > 0:
+                        continue
+                    else:
+                        break
 
                 elif index in word_map.values():
                     output.append(self.dataset_preparation.vocabulary.idx_to_word[int(index)])
@@ -213,7 +225,6 @@ class Predictor:
             output = indices
 
         return output
-
 
 if __name__ == "__main__":
     training = TrainingEvaluating('datasets/english_extended_qa.txt', None)

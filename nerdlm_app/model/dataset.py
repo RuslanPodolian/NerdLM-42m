@@ -11,7 +11,10 @@ class DatasetPreparation:
         self.idx_to_word = {value: key for key, value in self.vocabulary.word_map.items()}
 
     def convert_line_to_tensor(self, line, target: bool = True):
-        tokens = line.split()
+        if len(line.split()) == 0:
+            tokens = line
+        else:
+            tokens = line.split()
 
         self.vocabulary.add_word_per_line(tokens)
 
