@@ -161,10 +161,8 @@ class TrainingEvaluating:
                 loss = self.criterion(predictions, y)
                 indices = torch.argmax(predictions, dim=-1)
 
-                idx_to_word = self.custom_dataset.dataset_preparation.idx_to_word
-                for seq in indices:
-                    words = [idx_to_word.get(int(token_id), '<unk>') for token_id in seq]
-                    sequences.append(words)
+                for index in indices:
+                    sequences.append(self.custom_dataset.get_word_map()[index])
                 sum_loss += loss.item()
                 logging.info(f"Test Loss: {sum_loss/len(sequences)}")
 
@@ -203,13 +201,13 @@ class Predictor:
         if convert_to_text:
             output = []
             word_map = self.dataset_preparation.vocabulary.word_map
-            for index in indices:
+            for index in indices.data:
                 if index in [word_map['<start>'], word_map['<pad>'], word_map['<unk>']]:
                     continue
-                if index == word_map['<end>']:
+                elif index == word_map['<end>']:
                     break
 
-                if index in word_map.values():
+                elif index in word_map.values():
                     output.append(self.dataset_preparation.vocabulary.idx_to_word[int(index)])
         else:
             output = indices

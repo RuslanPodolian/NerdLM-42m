@@ -11,13 +11,14 @@ from nerdlm_app.model.vocabulary import Vocabulary
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 class NerdLM:
-    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='nerdlm.pt', training: bool = False, inference: bool = True):
+    def __init__(self, path=None, test_path=None, saved_model: bool = True, saved_model_name: str ='nerdlm_app/nerdlm.pt', training: bool = False, inference: bool = True):
         model_path = Path(saved_model_name)
         if not model_path.is_absolute():
-            model_path = (PROJECT_ROOT / model_path).resolve()
+            model_path = (PROJECT_ROOT / model_path)
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         self.path = path
+        self.model_path = model_path
         self.vocab_size = None
         self.path_obj = None
 
@@ -41,6 +42,7 @@ class NerdLM:
             if saved_model and model_path.is_file():
                 if model_path.stat().st_size == 0:
                     print(f"Saved model file is empty at '{model_path}'. Initializing a new model.")
+                    self.model_path = model_path
                 else:
                     try:
                         self.model.load_state_dict(torch.load(str(model_path), map_location=device))
@@ -59,12 +61,12 @@ class NerdLM:
             self.predictor = Predictor(model_path)
         self.dataset_preparation = DatasetPreparation()
 
-    def train(self, epochs=10, save_model: bool = True, save_path: str ='nerdlm.pt'):
+    def train(self, epochs=10, save_model: bool = True):
         self.training.train(epochs=epochs)
         if save_model:
-            self.training.save_model(self.model, save_path)
+            self.training.save_model(self.model, self.model_path)
 
-    def large_train(self, paths: list, epochs=10, save_model: bool = True, save_path: str ='nerdlm.pt'):
+    def large_train(self, paths: list, epochs=10, save_model: bool = True):
         len_paths = len(paths)
         for i, path in enumerate(paths):
             self.path = path
@@ -76,7 +78,7 @@ class NerdLM:
             print("-"*50)
 
             if save_model:
-                self.training.save_model(self.model, save_path)
+                self.training.save_model(self.model, self.model_path)
 
 
     def generate_answer(self, question, convert_indices_to_words=True):
@@ -86,7 +88,7 @@ class NerdLM:
         tokens = self.predictor.predict(question, convert_to_text=convert_indices_to_words)
 
         if convert_indices_to_words:
-            text = ''.join(tokens)
+            text = ' '.join(tokens)
         else:
             text = tokens
 
@@ -95,7 +97,7 @@ class NerdLM:
         return text
 
 if __name__ == "__main__":
-    bot = NerdLM('./nerdlm_app/model/datasets/english_extended_qa.txt', training=True, inference=False) # Paste any random dataset path
+    bot = NerdLM('./nerdlm_app/model/datasets/english_extended_qa.txt', training=True, inference=False, saved_model_name='nerdlm_app/nerdlm.pt') # Paste any random dataset path
     data_dir = './nerdlm_app/model/datasets/'
     files = glob.glob(os.path.join(data_dir, '*.txt'))
 
