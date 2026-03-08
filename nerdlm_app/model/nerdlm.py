@@ -6,6 +6,7 @@ import torch
 from pathlib import Path
 import glob
 import os
+import shutil
 
 from nerdlm_app.model.vocabulary import Vocabulary
 
@@ -22,6 +23,7 @@ class NerdLM:
         self.model_path = model_path
         self.path_obj = None
         self.training = None
+        self._dataset_is_trained = False
 
 
         if training:
@@ -82,12 +84,22 @@ class NerdLM:
             print(f"Dataset: {path}, count: [{i}/{len_paths}]")
             print("-"*15, f"Training on: {path}", "-"*15)
             self.training = TrainingEvaluating(path, test_path=None)
+            self._dataset_is_trained = False
             self.training.train(epochs=epochs)
+            self._dataset_is_trained = True
             # print(f"{path} training complete. Metrics: {self.training.evaluate()}")
             print("-"*50)
 
             if save_model:
                 self.training.save_model(self.model, self.model_path)
+                print(f"Model saved to {self.model_path}")
+
+            if self._dataset_is_trained:
+                trained_path = Path(self.path).parent / f"trained_{Path(self.path).name}"
+                shutil.move(self.path, trained_path)
+                print(f"Dataset {Path(self.path).name} moved to {trained_path}")
+
+                print("-"*50)
 
 
     def generate_answer(self, question, previous_questions: list, convert_indices_to_words=True):
