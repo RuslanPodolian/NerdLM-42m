@@ -9,7 +9,6 @@ class Vocabulary:
         self.word_map['<start>'] = 1
         self.word_map['<end>'] = 2
         self.word_map['<unk>'] = 3
-        self.word_map["word_map_coef"] = self.word_map['<unk>'] + 1
 
         vocabulary_path = os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json')
 
@@ -21,9 +20,11 @@ class Vocabulary:
 
         try:
             self.word_map = self.load_json_word_map()
+            self.word_map["word_map_coef"] = list(self.word_map.values())[-1] + 1
             print("Vocabulary loaded successfully.")
         except Exception as e:
             print(e)
+            self.word_map["word_map_coef"] = self.word_map['<unk>'] + 1
             print("No vocabulary file found or error loading it. Initializing existing base one.")
 
         self.idx_to_word = {idx: token for token, idx in self.word_map.items()}
