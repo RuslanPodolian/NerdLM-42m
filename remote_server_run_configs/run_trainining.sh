@@ -1,0 +1,1 @@
+python3 nerdlm_app/model/nerdlm.py

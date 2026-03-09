@@ -75,7 +75,7 @@ class NerdLM:
     def train(self, epochs=10, save_model: bool = True):
         self.training.train(epochs=epochs)
         if save_model:
-            self.training.save_model(self.model, self.model_path)
+            self.training.save_model(self.training.deep_transformer, self.model_path)
 
     def large_train(self, paths: list, epochs=10, save_model: bool = True):
         len_paths = len(paths)
@@ -91,7 +91,7 @@ class NerdLM:
             print("-"*50)
 
             if save_model:
-                self.training.save_model(self.model, self.model_path)
+                self.training.save_model(self.training.deep_transformer, self.model_path)
                 print(f"Model saved to {self.model_path}")
 
             if self._dataset_is_trained:
