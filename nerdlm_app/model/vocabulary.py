@@ -16,9 +16,6 @@ class Vocabulary:
         self.save_json_word_map = lambda: self.save_json_dump(vocabulary_path)
         self.load_json_word_map = lambda: self.load_json(os.path.join(vocabulary_path))
 
-        self.save_json_word_map()
-
-
         try:
             self.word_map = self.load_json_word_map()
             self.word_map["word_map_coef"] = list(self.word_map.values())[-1] + 1
