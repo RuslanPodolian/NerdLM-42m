@@ -9,6 +9,7 @@ class Vocabulary:
         self.word_map['<start>'] = 1
         self.word_map['<end>'] = 2
         self.word_map['<unk>'] = 3
+        self.word_map["word_map_coef"] = self.word_map['<unk>'] + 1
 
         vocabulary_path = os.path.join(os.path.dirname(__file__), 'datasets/vocabulary.json')
 
