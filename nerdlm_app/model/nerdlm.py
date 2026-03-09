@@ -118,7 +118,7 @@ class NerdLM:
         return text
 
 if __name__ == "__main__":
-    bot = NerdLM('./nerdlm_app/model/datasets/english_extended_qa.txt', training=True, inference=False, saved_model_name='nerdlm_app/nerdlm.pt') # Paste any random dataset path
+    bot = NerdLM('./nerdlm_app/model/datasets/english_extended_qa_part2.txt', training=True, inference=False, saved_model_name='nerdlm_app/nerdlm.pt') # Paste any random dataset path
     data_dir = './nerdlm_app/model/datasets/'
     files = glob.glob(os.path.join(data_dir, '*.txt'))
 
