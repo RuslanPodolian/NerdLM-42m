@@ -27,17 +27,37 @@ class Vocabulary:
 
         self.idx_to_word = {idx: token for token, idx in self.word_map.items()}
 
-        self.punctuation_str = '!@#$%^&*()_+-=[]{}|\\:;”“‘’<>,.?/~`'
+        self.punctuation_str = '!@#$%^&*()_+-=[]{}|\\:;”“‘’<>,.?/~` '
         self.max_length = 256
 
 
 
-    def add_word_per_line(self, lines, split_factor=' '):
+    def add_word_per_line(self, lines, split_factor=None):
+        if split_factor is None:
+            split_factor = self.punctuation_str
+
         self.word_map = self.load_json_word_map()
         self.word_map['word_map_coef'] = self.word_map['word_map_coef']
+
+        # Add all punctuation characters to vocabulary
+        for punct in split_factor:
+            if punct not in self.word_map and punct.strip():
+                self.word_map[punct] = self.word_map["word_map_coef"]
+                self.word_map['word_map_coef'] += 1
+
         for line in lines:
-            for word in line.split(split_factor):
-                if word not in self.punctuation_str and word not in self.word_map:
+            # Split by all punctuation characters
+            words = [line]
+            for punct in split_factor:
+                new_words = []
+                for w in words:
+                    new_words.extend(w.split(punct))
+                words = new_words
+
+            # Add non-empty words to vocabulary
+            for word in words:
+                word = word.strip()
+                if word and word not in self.word_map:
                     self.word_map[word] = self.word_map["word_map_coef"]
                     self.word_map['word_map_coef'] += 1
         self.save_json_word_map()
