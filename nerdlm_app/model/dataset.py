@@ -1,4 +1,3 @@
-import re
 import torch
 from pathlib import Path
 from torch.utils.data import Dataset
@@ -53,12 +52,10 @@ class DatasetPreparation:
         y = []
 
         for line in lines:
-            q_match = re.search(r'<question>(.*?)</question>', line)
-            a_match = re.search(r'<answer>(.*?)</answer>', line)
-            if q_match:
-                x.append(self.convert_line_to_tensor(q_match.group(1).strip(), target=False))
-            if a_match:
-                y.append(self.convert_line_to_tensor(a_match.group(1).strip(), target=True))
+            if 'ans:' in line:
+                y.append(self.convert_line_to_tensor(line, target=True))
+            if 'ques:' in line:
+                x.append(self.convert_line_to_tensor(line, target=False))
 
         return x, y
 

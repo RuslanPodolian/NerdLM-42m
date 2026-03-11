@@ -79,40 +79,39 @@ class Vocabulary:
         self.save_json_word_map()
 
     def save_json_dump(self, path, logging=False):
-        # with open(path, 'w') as f:
-        #     json.dump(self.word_map, f)
+        existing = {}
         if os.path.exists(path):
-            with open(path, 'r') as f:
-                try:
-                   existing = json.load(f)
-                except json.decoder.JSONDecodeError:
-                    existing = {}
-                    print("Error loading existing vocabulary file. Creating new one.")
-            existing.update(self.word_map)
-        else:
-            print("No file was found! Import loaded word_map")
-            existing = self.word_map
+            try:
+                with open(path, 'r') as f:
+                    existing = json.load(f)
+            except (json.decoder.JSONDecodeError, OSError):
+                existing = {}
 
-        with open(path, 'w') as f:
+        existing.update(self.word_map)
+
+        tmp_path = path + '.tmp'
+        with open(tmp_path, 'w') as f:
             json.dump(existing, f)
+        os.replace(tmp_path, path)
+
         if logging:
             print(f"Vocabulary saved to {path}")
 
 
     def load_json(self, path):
         if not os.path.exists(path):
-            return self.word_map
+            return dict(self.word_map)
 
-        with open(path, 'r') as f:
-            try:
+        try:
+            with open(path, 'r') as f:
                 data = json.load(f)
-            except json.JSONDecodeError:
-                print(f"Corrupted vocabulary file at '{path}'. Rebuilding from scratch.")
-                try:
-                    os.remove(path)
-                except OSError:
-                    pass
-                return self.word_map
+        except (json.JSONDecodeError, OSError):
+            print(f"Corrupted vocabulary file at '{path}'. Rebuilding from scratch.")
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+            return dict(self.word_map)
 
         if 'word_map_coef' not in data:
             max_id = max(v for v in data.values() if isinstance(v, int))

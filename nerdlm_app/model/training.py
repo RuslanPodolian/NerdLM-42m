@@ -223,12 +223,8 @@ class TrainingEvaluating:
             output = []
             word_map = self.dataset_preparation.vocabulary.word_map
             for index in indices.data:
-                skip_tokens = [word_map['<start>'], word_map['<pad>'], word_map['<unk>']]
-                if 'ques' in word_map:
-                    skip_tokens.append(word_map['ques'])
-                if 'ans' in word_map:
-                    skip_tokens.append(word_map['ans'])
-                if index in skip_tokens:
+                if index in [word_map['<start>'], word_map['<pad>'],
+                             word_map['<unk>'], word_map['<question>'], word_map['<ans>']]:
                     continue
 
                 elif index == word_map['<end>']:

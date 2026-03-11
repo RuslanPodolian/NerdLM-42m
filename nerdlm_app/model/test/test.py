@@ -3,7 +3,7 @@ with open('../datasets/extended_qa_dataset.txt', 'r') as f:
 
     for line in lines:
         print(line)
-        if '<answer>' in line:
+        if 'ans:' in line.split():
             print(True)
         else:
             print(False)

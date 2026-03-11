@@ -1,4 +1,4 @@
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage.</question><answer>Explanation: This function returns a new string which is the reverse of the input.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage. ans: Explanation: This function returns a new string which is the reverse of the input.
 It handles Unicode correctly using Python's slicing which works with code points.
 ```python
 def reverse_string(s: str) -> str:
@@ -8,7 +8,7 @@ if __name__ == "__main__":
     print(reverse_string("hello"))  # output: 'olleh'
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage.</question><answer>Explanation: Iterative factorial using 64-bit integers.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage. ans: Explanation: Iterative factorial using 64-bit integers.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -24,7 +24,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array.</question><answer>Explanation: Generate first n Fibonacci numbers as an array.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array. ans: Explanation: Generate first n Fibonacci numbers as an array.
 ```javascript
 function fibonacci(n) {
   if (n <= 0) return [];
@@ -36,7 +36,7 @@ function fibonacci(n) {
 console.log(fibonacci(10));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found.</question><answer>Explanation: Binary search using while loop.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found. ans: Explanation: Binary search using while loop.
 ```java
 public class Main {
     public static int binarySearch(int[] a, int target) {
@@ -55,7 +55,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array.</question><answer>Explanation: Merge two sorted slices into one.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array. ans: Explanation: Merge two sorted slices into one.
 ```go
 package main
 import "fmt"
@@ -70,7 +70,7 @@ func mergeSorted(a,b []int) []int {
 func main(){ fmt.Println(mergeSorted([]int{1,3,5}, []int{2,4,6})) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage.</question><answer>Explanation: In-place quicksort (Lomuto partition) for integers.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage. ans: Explanation: In-place quicksort (Lomuto partition) for integers.
 ```python
 from typing import List
 def quicksort(arr: List[int], lo: int=0, hi: int=None) -> None:
@@ -97,7 +97,7 @@ if __name__ == "__main__":
     print(a)
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case).</question><answer>Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case). ans: Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -113,7 +113,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n).</question><answer>Explanation: Trial division up to sqrt(n).</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n). ans: Explanation: Trial division up to sqrt(n).
 ```javascript
 function isPrime(n) {
   if (n <= 1) return false;
@@ -126,7 +126,7 @@ function isPrime(n) {
 console.log(isPrime(97)); // true
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n.</question><answer>Explanation: Sieve using boolean array.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n. ans: Explanation: Sieve using boolean array.
 ```java
 import java.util.*;
 public class Main {
@@ -144,7 +144,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words.</question><answer>Explanation: Read file and count words using bufio.Scanner.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words. ans: Explanation: Read file and count words using bufio.Scanner.
 ```go
 package main
 import ("bufio"; "fmt"; "os"; "regexp"; "sort")
@@ -170,7 +170,7 @@ func main(){
 }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request.</question><answer>Explanation: Minimal HTTP server using Python's http.server module.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request. ans: Explanation: Minimal HTTP server using Python's http.server module.
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -190,7 +190,7 @@ if __name__ == '__main__':
         server.server_close()
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields).</question><answer>Explanation: Very small CSV parser handling quoted fields (simple).</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields). ans: Explanation: Very small CSV parser handling quoted fields (simple).
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -214,7 +214,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array.</question><answer>Explanation: Flatten nested arrays recursively.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array. ans: Explanation: Flatten nested arrays recursively.
 ```javascript
 function flatten(arr) {
   const out = [];
@@ -229,9 +229,9 @@ function flatten(arr) {
 console.log(flatten([1,[2,3],[4,[5,6]],7]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call.</question><answer>Explanation: Debounce is JavaScript-specific; not included for Java.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call. ans: Explanation: Debounce is JavaScript-specific; not included for Java.
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods.</question><answer>Explanation: Stack using slice.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods. ans: Explanation: Stack using slice.
 ```go
 package main
 import "fmt"
@@ -243,7 +243,7 @@ func (s *Stack) IsEmpty() bool { return len(s.data)==0 }
 func main(){ var s Stack; s.Push(1); s.Push(2); fmt.Println(s.Pop(), s.Peek()) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations.</question><answer>Explanation: Queue implemented with two stacks (lists); amortized O(1).</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations. ans: Explanation: Queue implemented with two stacks (lists); amortized O(1).
 ```python
 class QueueTwoStacks:
     def __init__(self):
@@ -270,7 +270,7 @@ if __name__ == '__main__':
     print(q.dequeue(), q.dequeue())  # 1 2
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative).</question><answer>Explanation: Basic recursive and iterative inorder with struct Node.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative). ans: Explanation: Basic recursive and iterative inorder with struct Node.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -280,7 +280,7 @@ vector<int> inorder_iter(Node* root){ vector<int> out; stack<Node*> st; Node* cu
 int main(){ Node* root=new Node(2); root->left=new Node(1); root->right=new Node(3); vector<int> o; inorder_rec(root,o); for(int v:o) cout<<v<<' '; cout<<"\n"; auto o2=inorder_iter(root); for(int v:o2) cout<<v<<' '; cout<<"\n"; }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end].</question><answer>Explanation: Merge overlapping intervals after sorting by start.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end]. ans: Explanation: Merge overlapping intervals after sorting by start.
 ```javascript
 function mergeIntervals(intervals) {
   if (!intervals.length) return [];
@@ -296,7 +296,7 @@ function mergeIntervals(intervals) {
 console.log(mergeIntervals([[1,3],[2,6],[8,10]]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order.</question><answer>Explanation: Preserve order using LinkedHashSet or manual set.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order. ans: Explanation: Preserve order using LinkedHashSet or manual set.
 ```java
 import java.util.*;
 public class Main {
@@ -309,7 +309,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows).</question><answer>Explanation: Rotate using append and slicing.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows). ans: Explanation: Rotate using append and slicing.
 ```go
 package main
 import "fmt"
@@ -320,7 +320,7 @@ func rotateRight(a []int, k int) []int {
 func main(){ fmt.Println(rotateRight([]int{1,2,3,4,5}, 2)) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage.</question><answer>Explanation: This function returns a new string which is the reverse of the input.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage. ans: Explanation: This function returns a new string which is the reverse of the input.
 It handles Unicode correctly using Python's slicing which works with code points.
 ```python
 def reverse_string(s: str) -> str:
@@ -330,7 +330,7 @@ if __name__ == "__main__":
     print(reverse_string("hello"))  # output: 'olleh'
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage.</question><answer>Explanation: Iterative factorial using 64-bit integers.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage. ans: Explanation: Iterative factorial using 64-bit integers.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -346,7 +346,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array.</question><answer>Explanation: Generate first n Fibonacci numbers as an array.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array. ans: Explanation: Generate first n Fibonacci numbers as an array.
 ```javascript
 function fibonacci(n) {
   if (n <= 0) return [];
@@ -358,7 +358,7 @@ function fibonacci(n) {
 console.log(fibonacci(10));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found.</question><answer>Explanation: Binary search using while loop.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found. ans: Explanation: Binary search using while loop.
 ```java
 public class Main {
     public static int binarySearch(int[] a, int target) {
@@ -377,7 +377,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array.</question><answer>Explanation: Merge two sorted slices into one.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array. ans: Explanation: Merge two sorted slices into one.
 ```go
 package main
 import "fmt"
@@ -392,7 +392,7 @@ func mergeSorted(a,b []int) []int {
 func main(){ fmt.Println(mergeSorted([]int{1,3,5}, []int{2,4,6})) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage.</question><answer>Explanation: In-place quicksort (Lomuto partition) for integers.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage. ans: Explanation: In-place quicksort (Lomuto partition) for integers.
 ```python
 from typing import List
 def quicksort(arr: List[int], lo: int=0, hi: int=None) -> None:
@@ -419,7 +419,7 @@ if __name__ == "__main__":
     print(a)
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case).</question><answer>Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case). ans: Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -435,7 +435,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n).</question><answer>Explanation: Trial division up to sqrt(n).</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n). ans: Explanation: Trial division up to sqrt(n).
 ```javascript
 function isPrime(n) {
   if (n <= 1) return false;
@@ -448,7 +448,7 @@ function isPrime(n) {
 console.log(isPrime(97)); // true
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n.</question><answer>Explanation: Sieve using boolean array.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n. ans: Explanation: Sieve using boolean array.
 ```java
 import java.util.*;
 public class Main {
@@ -466,7 +466,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words.</question><answer>Explanation: Read file and count words using bufio.Scanner.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words. ans: Explanation: Read file and count words using bufio.Scanner.
 ```go
 package main
 import ("bufio"; "fmt"; "os"; "regexp"; "sort")
@@ -492,7 +492,7 @@ func main(){
 }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request.</question><answer>Explanation: Minimal HTTP server using Python's http.server module.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request. ans: Explanation: Minimal HTTP server using Python's http.server module.
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -512,7 +512,7 @@ if __name__ == '__main__':
         server.server_close()
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields).</question><answer>Explanation: Very small CSV parser handling quoted fields (simple).</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields). ans: Explanation: Very small CSV parser handling quoted fields (simple).
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -536,7 +536,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array.</question><answer>Explanation: Flatten nested arrays recursively.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array. ans: Explanation: Flatten nested arrays recursively.
 ```javascript
 function flatten(arr) {
   const out = [];
@@ -551,9 +551,9 @@ function flatten(arr) {
 console.log(flatten([1,[2,3],[4,[5,6]],7]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call.</question><answer>Explanation: Debounce is JavaScript-specific; not included for Java.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call. ans: Explanation: Debounce is JavaScript-specific; not included for Java.
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods.</question><answer>Explanation: Stack using slice.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods. ans: Explanation: Stack using slice.
 ```go
 package main
 import "fmt"
@@ -565,7 +565,7 @@ func (s *Stack) IsEmpty() bool { return len(s.data)==0 }
 func main(){ var s Stack; s.Push(1); s.Push(2); fmt.Println(s.Pop(), s.Peek()) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations.</question><answer>Explanation: Queue implemented with two stacks (lists); amortized O(1).</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations. ans: Explanation: Queue implemented with two stacks (lists); amortized O(1).
 ```python
 class QueueTwoStacks:
     def __init__(self):
@@ -592,7 +592,7 @@ if __name__ == '__main__':
     print(q.dequeue(), q.dequeue())  # 1 2
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative).</question><answer>Explanation: Basic recursive and iterative inorder with struct Node.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative). ans: Explanation: Basic recursive and iterative inorder with struct Node.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -602,7 +602,7 @@ vector<int> inorder_iter(Node* root){ vector<int> out; stack<Node*> st; Node* cu
 int main(){ Node* root=new Node(2); root->left=new Node(1); root->right=new Node(3); vector<int> o; inorder_rec(root,o); for(int v:o) cout<<v<<' '; cout<<"\n"; auto o2=inorder_iter(root); for(int v:o2) cout<<v<<' '; cout<<"\n"; }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end].</question><answer>Explanation: Merge overlapping intervals after sorting by start.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end]. ans: Explanation: Merge overlapping intervals after sorting by start.
 ```javascript
 function mergeIntervals(intervals) {
   if (!intervals.length) return [];
@@ -618,7 +618,7 @@ function mergeIntervals(intervals) {
 console.log(mergeIntervals([[1,3],[2,6],[8,10]]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order.</question><answer>Explanation: Preserve order using LinkedHashSet or manual set.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order. ans: Explanation: Preserve order using LinkedHashSet or manual set.
 ```java
 import java.util.*;
 public class Main {
@@ -631,7 +631,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows).</question><answer>Explanation: Rotate using append and slicing.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows). ans: Explanation: Rotate using append and slicing.
 ```go
 package main
 import "fmt"
@@ -642,7 +642,7 @@ func rotateRight(a []int, k int) []int {
 func main(){ fmt.Println(rotateRight([]int{1,2,3,4,5}, 2)) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage.</question><answer>Explanation: This function returns a new string which is the reverse of the input.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage. ans: Explanation: This function returns a new string which is the reverse of the input.
 It handles Unicode correctly using Python's slicing which works with code points.
 ```python
 def reverse_string(s: str) -> str:
@@ -652,7 +652,7 @@ if __name__ == "__main__":
     print(reverse_string("hello"))  # output: 'olleh'
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage.</question><answer>Explanation: Iterative factorial using 64-bit integers.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage. ans: Explanation: Iterative factorial using 64-bit integers.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -668,7 +668,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array.</question><answer>Explanation: Generate first n Fibonacci numbers as an array.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array. ans: Explanation: Generate first n Fibonacci numbers as an array.
 ```javascript
 function fibonacci(n) {
   if (n <= 0) return [];
@@ -680,7 +680,7 @@ function fibonacci(n) {
 console.log(fibonacci(10));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found.</question><answer>Explanation: Binary search using while loop.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found. ans: Explanation: Binary search using while loop.
 ```java
 public class Main {
     public static int binarySearch(int[] a, int target) {
@@ -699,7 +699,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array.</question><answer>Explanation: Merge two sorted slices into one.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array. ans: Explanation: Merge two sorted slices into one.
 ```go
 package main
 import "fmt"
@@ -714,7 +714,7 @@ func mergeSorted(a,b []int) []int {
 func main(){ fmt.Println(mergeSorted([]int{1,3,5}, []int{2,4,6})) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage.</question><answer>Explanation: In-place quicksort (Lomuto partition) for integers.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage. ans: Explanation: In-place quicksort (Lomuto partition) for integers.
 ```python
 from typing import List
 def quicksort(arr: List[int], lo: int=0, hi: int=None) -> None:
@@ -741,7 +741,7 @@ if __name__ == "__main__":
     print(a)
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case).</question><answer>Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case). ans: Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -757,7 +757,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n).</question><answer>Explanation: Trial division up to sqrt(n).</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n). ans: Explanation: Trial division up to sqrt(n).
 ```javascript
 function isPrime(n) {
   if (n <= 1) return false;
@@ -770,7 +770,7 @@ function isPrime(n) {
 console.log(isPrime(97)); // true
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n.</question><answer>Explanation: Sieve using boolean array.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n. ans: Explanation: Sieve using boolean array.
 ```java
 import java.util.*;
 public class Main {
@@ -788,7 +788,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words.</question><answer>Explanation: Read file and count words using bufio.Scanner.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words. ans: Explanation: Read file and count words using bufio.Scanner.
 ```go
 package main
 import ("bufio"; "fmt"; "os"; "regexp"; "sort")
@@ -814,7 +814,7 @@ func main(){
 }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request.</question><answer>Explanation: Minimal HTTP server using Python's http.server module.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request. ans: Explanation: Minimal HTTP server using Python's http.server module.
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -834,7 +834,7 @@ if __name__ == '__main__':
         server.server_close()
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields).</question><answer>Explanation: Very small CSV parser handling quoted fields (simple).</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields). ans: Explanation: Very small CSV parser handling quoted fields (simple).
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -858,7 +858,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array.</question><answer>Explanation: Flatten nested arrays recursively.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array. ans: Explanation: Flatten nested arrays recursively.
 ```javascript
 function flatten(arr) {
   const out = [];
@@ -873,9 +873,9 @@ function flatten(arr) {
 console.log(flatten([1,[2,3],[4,[5,6]],7]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call.</question><answer>Explanation: Debounce is JavaScript-specific; not included for Java.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call. ans: Explanation: Debounce is JavaScript-specific; not included for Java.
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods.</question><answer>Explanation: Stack using slice.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods. ans: Explanation: Stack using slice.
 ```go
 package main
 import "fmt"
@@ -887,7 +887,7 @@ func (s *Stack) IsEmpty() bool { return len(s.data)==0 }
 func main(){ var s Stack; s.Push(1); s.Push(2); fmt.Println(s.Pop(), s.Peek()) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations.</question><answer>Explanation: Queue implemented with two stacks (lists); amortized O(1).</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations. ans: Explanation: Queue implemented with two stacks (lists); amortized O(1).
 ```python
 class QueueTwoStacks:
     def __init__(self):
@@ -914,7 +914,7 @@ if __name__ == '__main__':
     print(q.dequeue(), q.dequeue())  # 1 2
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative).</question><answer>Explanation: Basic recursive and iterative inorder with struct Node.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative). ans: Explanation: Basic recursive and iterative inorder with struct Node.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -924,7 +924,7 @@ vector<int> inorder_iter(Node* root){ vector<int> out; stack<Node*> st; Node* cu
 int main(){ Node* root=new Node(2); root->left=new Node(1); root->right=new Node(3); vector<int> o; inorder_rec(root,o); for(int v:o) cout<<v<<' '; cout<<"\n"; auto o2=inorder_iter(root); for(int v:o2) cout<<v<<' '; cout<<"\n"; }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end].</question><answer>Explanation: Merge overlapping intervals after sorting by start.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end]. ans: Explanation: Merge overlapping intervals after sorting by start.
 ```javascript
 function mergeIntervals(intervals) {
   if (!intervals.length) return [];
@@ -940,7 +940,7 @@ function mergeIntervals(intervals) {
 console.log(mergeIntervals([[1,3],[2,6],[8,10]]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order.</question><answer>Explanation: Preserve order using LinkedHashSet or manual set.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order. ans: Explanation: Preserve order using LinkedHashSet or manual set.
 ```java
 import java.util.*;
 public class Main {
@@ -953,7 +953,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows).</question><answer>Explanation: Rotate using append and slicing.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows). ans: Explanation: Rotate using append and slicing.
 ```go
 package main
 import "fmt"
@@ -964,7 +964,7 @@ func rotateRight(a []int, k int) []int {
 func main(){ fmt.Println(rotateRight([]int{1,2,3,4,5}, 2)) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage.</question><answer>Explanation: This function returns a new string which is the reverse of the input.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage. ans: Explanation: This function returns a new string which is the reverse of the input.
 It handles Unicode correctly using Python's slicing which works with code points.
 ```python
 def reverse_string(s: str) -> str:
@@ -974,7 +974,7 @@ if __name__ == "__main__":
     print(reverse_string("hello"))  # output: 'olleh'
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage.</question><answer>Explanation: Iterative factorial using 64-bit integers.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage. ans: Explanation: Iterative factorial using 64-bit integers.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -990,7 +990,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array.</question><answer>Explanation: Generate first n Fibonacci numbers as an array.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array. ans: Explanation: Generate first n Fibonacci numbers as an array.
 ```javascript
 function fibonacci(n) {
   if (n <= 0) return [];
@@ -1002,7 +1002,7 @@ function fibonacci(n) {
 console.log(fibonacci(10));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found.</question><answer>Explanation: Binary search using while loop.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found. ans: Explanation: Binary search using while loop.
 ```java
 public class Main {
     public static int binarySearch(int[] a, int target) {
@@ -1021,7 +1021,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array.</question><answer>Explanation: Merge two sorted slices into one.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array. ans: Explanation: Merge two sorted slices into one.
 ```go
 package main
 import "fmt"
@@ -1036,7 +1036,7 @@ func mergeSorted(a,b []int) []int {
 func main(){ fmt.Println(mergeSorted([]int{1,3,5}, []int{2,4,6})) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage.</question><answer>Explanation: In-place quicksort (Lomuto partition) for integers.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage. ans: Explanation: In-place quicksort (Lomuto partition) for integers.
 ```python
 from typing import List
 def quicksort(arr: List[int], lo: int=0, hi: int=None) -> None:
@@ -1063,7 +1063,7 @@ if __name__ == "__main__":
     print(a)
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case).</question><answer>Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case). ans: Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1079,7 +1079,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n).</question><answer>Explanation: Trial division up to sqrt(n).</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n). ans: Explanation: Trial division up to sqrt(n).
 ```javascript
 function isPrime(n) {
   if (n <= 1) return false;
@@ -1092,7 +1092,7 @@ function isPrime(n) {
 console.log(isPrime(97)); // true
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n.</question><answer>Explanation: Sieve using boolean array.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n. ans: Explanation: Sieve using boolean array.
 ```java
 import java.util.*;
 public class Main {
@@ -1110,7 +1110,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words.</question><answer>Explanation: Read file and count words using bufio.Scanner.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words. ans: Explanation: Read file and count words using bufio.Scanner.
 ```go
 package main
 import ("bufio"; "fmt"; "os"; "regexp"; "sort")
@@ -1136,7 +1136,7 @@ func main(){
 }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request.</question><answer>Explanation: Minimal HTTP server using Python's http.server module.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request. ans: Explanation: Minimal HTTP server using Python's http.server module.
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -1156,7 +1156,7 @@ if __name__ == '__main__':
         server.server_close()
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields).</question><answer>Explanation: Very small CSV parser handling quoted fields (simple).</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields). ans: Explanation: Very small CSV parser handling quoted fields (simple).
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1180,7 +1180,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array.</question><answer>Explanation: Flatten nested arrays recursively.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array. ans: Explanation: Flatten nested arrays recursively.
 ```javascript
 function flatten(arr) {
   const out = [];
@@ -1195,9 +1195,9 @@ function flatten(arr) {
 console.log(flatten([1,[2,3],[4,[5,6]],7]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call.</question><answer>Explanation: Debounce is JavaScript-specific; not included for Java.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call. ans: Explanation: Debounce is JavaScript-specific; not included for Java.
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods.</question><answer>Explanation: Stack using slice.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods. ans: Explanation: Stack using slice.
 ```go
 package main
 import "fmt"
@@ -1209,7 +1209,7 @@ func (s *Stack) IsEmpty() bool { return len(s.data)==0 }
 func main(){ var s Stack; s.Push(1); s.Push(2); fmt.Println(s.Pop(), s.Peek()) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations.</question><answer>Explanation: Queue implemented with two stacks (lists); amortized O(1).</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations. ans: Explanation: Queue implemented with two stacks (lists); amortized O(1).
 ```python
 class QueueTwoStacks:
     def __init__(self):
@@ -1236,7 +1236,7 @@ if __name__ == '__main__':
     print(q.dequeue(), q.dequeue())  # 1 2
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative).</question><answer>Explanation: Basic recursive and iterative inorder with struct Node.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative). ans: Explanation: Basic recursive and iterative inorder with struct Node.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1246,7 +1246,7 @@ vector<int> inorder_iter(Node* root){ vector<int> out; stack<Node*> st; Node* cu
 int main(){ Node* root=new Node(2); root->left=new Node(1); root->right=new Node(3); vector<int> o; inorder_rec(root,o); for(int v:o) cout<<v<<' '; cout<<"\n"; auto o2=inorder_iter(root); for(int v:o2) cout<<v<<' '; cout<<"\n"; }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end].</question><answer>Explanation: Merge overlapping intervals after sorting by start.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end]. ans: Explanation: Merge overlapping intervals after sorting by start.
 ```javascript
 function mergeIntervals(intervals) {
   if (!intervals.length) return [];
@@ -1262,7 +1262,7 @@ function mergeIntervals(intervals) {
 console.log(mergeIntervals([[1,3],[2,6],[8,10]]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order.</question><answer>Explanation: Preserve order using LinkedHashSet or manual set.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order. ans: Explanation: Preserve order using LinkedHashSet or manual set.
 ```java
 import java.util.*;
 public class Main {
@@ -1275,7 +1275,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows).</question><answer>Explanation: Rotate using append and slicing.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows). ans: Explanation: Rotate using append and slicing.
 ```go
 package main
 import "fmt"
@@ -1286,7 +1286,7 @@ func rotateRight(a []int, k int) []int {
 func main(){ fmt.Println(rotateRight([]int{1,2,3,4,5}, 2)) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage.</question><answer>Explanation: This function returns a new string which is the reverse of the input.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a function that reverses a string and returns the reversed string. Include example usage. ans: Explanation: This function returns a new string which is the reverse of the input.
 It handles Unicode correctly using Python's slicing which works with code points.
 ```python
 def reverse_string(s: str) -> str:
@@ -1296,7 +1296,7 @@ if __name__ == "__main__":
     print(reverse_string("hello"))  # output: 'olleh'
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage.</question><answer>Explanation: Iterative factorial using 64-bit integers.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function to compute the factorial of a non-negative integer (iterative). Include example usage. ans: Explanation: Iterative factorial using 64-bit integers.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1312,7 +1312,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array.</question><answer>Explanation: Generate first n Fibonacci numbers as an array.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that returns the first n Fibonacci numbers (iterative) as a list/array. ans: Explanation: Generate first n Fibonacci numbers as an array.
 ```javascript
 function fibonacci(n) {
   if (n <= 0) return [];
@@ -1324,7 +1324,7 @@ function fibonacci(n) {
 console.log(fibonacci(10));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found.</question><answer>Explanation: Binary search using while loop.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Write a binary search function that searches for a target in a sorted array and returns the index or -1 if not found. ans: Explanation: Binary search using while loop.
 ```java
 public class Main {
     public static int binarySearch(int[] a, int target) {
@@ -1343,7 +1343,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array.</question><answer>Explanation: Merge two sorted slices into one.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a function that merges two sorted arrays into a single sorted array. ans: Explanation: Merge two sorted slices into one.
 ```go
 package main
 import "fmt"
@@ -1358,7 +1358,7 @@ func mergeSorted(a,b []int) []int {
 func main(){ fmt.Println(mergeSorted([]int{1,3,5}, []int{2,4,6})) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage.</question><answer>Explanation: In-place quicksort (Lomuto partition) for integers.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement quicksort to sort an array of integers in place and show example usage. ans: Explanation: In-place quicksort (Lomuto partition) for integers.
 ```python
 from typing import List
 def quicksort(arr: List[int], lo: int=0, hi: int=None) -> None:
@@ -1385,7 +1385,7 @@ if __name__ == "__main__":
     print(a)
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case).</question><answer>Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a function that checks whether a given string is a palindrome (ignoring non-alphanumerics and case). ans: Explanation: Normalize string keeping alphanumerics, compare forwards/backwards.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1401,7 +1401,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n).</question><answer>Explanation: Trial division up to sqrt(n).</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that checks whether an integer is prime (efficient up to moderate n). ans: Explanation: Trial division up to sqrt(n).
 ```javascript
 function isPrime(n) {
   if (n <= 1) return false;
@@ -1414,7 +1414,7 @@ function isPrime(n) {
 console.log(isPrime(97)); // true
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n.</question><answer>Explanation: Sieve using boolean array.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Implement the Sieve of Eratosthenes to list primes up to n. ans: Explanation: Sieve using boolean array.
 ```java
 import java.util.*;
 public class Main {
@@ -1432,7 +1432,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words.</question><answer>Explanation: Read file and count words using bufio.Scanner.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Write a program that reads a text file and counts word frequencies, printing the top 10 most common words. ans: Explanation: Read file and count words using bufio.Scanner.
 ```go
 package main
 import ("bufio"; "fmt"; "os"; "regexp"; "sort")
@@ -1458,7 +1458,7 @@ func main(){
 }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request.</question><answer>Explanation: Minimal HTTP server using Python's http.server module.</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Write a minimal HTTP server that responds with 'Hello, world!' to any GET request. ans: Explanation: Minimal HTTP server using Python's http.server module.
 ```python
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -1478,7 +1478,7 @@ if __name__ == '__main__':
         server.server_close()
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields).</question><answer>Explanation: Very small CSV parser handling quoted fields (simple).</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Write a small CSV parser that reads a CSV string and returns a list/array of rows (each row is a list/array of fields). ans: Explanation: Very small CSV parser handling quoted fields (simple).
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1502,7 +1502,7 @@ int main() {
 }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array.</question><answer>Explanation: Flatten nested arrays recursively.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function that flattens a nested list/array of integers (arbitrary nesting) into a single-level list/array. ans: Explanation: Flatten nested arrays recursively.
 ```javascript
 function flatten(arr) {
   const out = [];
@@ -1517,9 +1517,9 @@ function flatten(arr) {
 console.log(flatten([1,[2,3],[4,[5,6]],7]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call.</question><answer>Explanation: Debounce is JavaScript-specific; not included for Java.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. (JavaScript) Implement a debounce function that delays invoking a function until a specified wait time has passed since the last call. ans: Explanation: Debounce is JavaScript-specific; not included for Java.
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods.</question><answer>Explanation: Stack using slice.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Implement a simple Stack class with push, pop, peek, and isEmpty methods. ans: Explanation: Stack using slice.
 ```go
 package main
 import "fmt"
@@ -1531,7 +1531,7 @@ func (s *Stack) IsEmpty() bool { return len(s.data)==0 }
 func main(){ var s Stack; s.Push(1); s.Push(2); fmt.Println(s.Pop(), s.Peek()) }
 ```
 
-<question>I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations.</question><answer>Explanation: Queue implemented with two stacks (lists); amortized O(1).</answer>
+ques: I need a correct implementation in python. Please provide a working solution and explanation. Implement a queue using two stacks with enqueue and dequeue operations. ans: Explanation: Queue implemented with two stacks (lists); amortized O(1).
 ```python
 class QueueTwoStacks:
     def __init__(self):
@@ -1558,7 +1558,7 @@ if __name__ == '__main__':
     print(q.dequeue(), q.dequeue())  # 1 2
 ```
 
-<question>I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative).</question><answer>Explanation: Basic recursive and iterative inorder with struct Node.</answer>
+ques: I need a correct implementation in cpp. Please provide a working solution and explanation. Given a binary tree node structure, implement inorder traversal (recursive and iterative). ans: Explanation: Basic recursive and iterative inorder with struct Node.
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -1568,7 +1568,7 @@ vector<int> inorder_iter(Node* root){ vector<int> out; stack<Node*> st; Node* cu
 int main(){ Node* root=new Node(2); root->left=new Node(1); root->right=new Node(3); vector<int> o; inorder_rec(root,o); for(int v:o) cout<<v<<' '; cout<<"\n"; auto o2=inorder_iter(root); for(int v:o2) cout<<v<<' '; cout<<"\n"; }
 ```
 
-<question>I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end].</question><answer>Explanation: Merge overlapping intervals after sorting by start.</answer>
+ques: I need a correct implementation in javascript. Please provide a working solution and explanation. Write a function to merge overlapping intervals given as pairs [start,end]. ans: Explanation: Merge overlapping intervals after sorting by start.
 ```javascript
 function mergeIntervals(intervals) {
   if (!intervals.length) return [];
@@ -1584,7 +1584,7 @@ function mergeIntervals(intervals) {
 console.log(mergeIntervals([[1,3],[2,6],[8,10]]));
 ```
 
-<question>I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order.</question><answer>Explanation: Preserve order using LinkedHashSet or manual set.</answer>
+ques: I need a correct implementation in java. Please provide a working solution and explanation. Return the list/array of unique elements from an array while preserving first occurrence order. ans: Explanation: Preserve order using LinkedHashSet or manual set.
 ```java
 import java.util.*;
 public class Main {
@@ -1597,7 +1597,7 @@ public class Main {
 }
 ```
 
-<question>I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows).</question><answer>Explanation: Rotate using append and slicing.</answer>
+ques: I need a correct implementation in go. Please provide a working solution and explanation. Rotate an array to the right by k steps (in-place if language allows). ans: Explanation: Rotate using append and slicing.
 ```go
 package main
 import "fmt"
