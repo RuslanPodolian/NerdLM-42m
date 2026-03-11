@@ -103,6 +103,10 @@ class Vocabulary:
         with open(path, 'r') as f:
             data = json.load(f)
 
+        if 'word_map_coef' not in data:
+            max_id = max(v for v in data.values() if isinstance(v, int))
+            data['word_map_coef'] = max_id + 1
+
         return data
 
     def load_lines_of_text_file(self, path):
