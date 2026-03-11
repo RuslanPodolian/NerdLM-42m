@@ -7,7 +7,6 @@ from nerdlm_app.model.vocabulary import Vocabulary
 class DatasetPreparation:
     def __init__(self):
         self.vocabulary = Vocabulary()
-        self.vocabulary.load_json_word_map()
         self.idx_to_word = {value: key for key, value in self.vocabulary.word_map.items()}
 
     def convert_line_to_tensor(self, line, target: bool = True):
