@@ -1,5 +1,3 @@
-from tkinter.messagebox import QUESTION
-
 from nerdlm_app.model.transformer import DeepTransformer
 from nerdlm_app.model.dataset import CustomDataset, DatasetPreparation
 
