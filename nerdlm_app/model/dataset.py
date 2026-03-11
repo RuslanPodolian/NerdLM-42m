@@ -1,3 +1,4 @@
+import re
 import torch
 from pathlib import Path
 from torch.utils.data import Dataset
@@ -9,13 +10,14 @@ class DatasetPreparation:
         self.vocabulary = Vocabulary()
         self.idx_to_word = {value: key for key, value in self.vocabulary.word_map.items()}
 
-    def convert_line_to_tensor(self, line, target: bool = True):
+    def convert_line_to_tensor(self, line, target: bool = True, expand_vocab: bool = True):
         if len(line.split()) == 0:
             tokens = line
         else:
             tokens = line.split()
 
-        self.vocabulary.add_word_per_line(tokens)
+        if expand_vocab:
+            self.vocabulary.add_word_per_line(tokens)
 
         padding = lambda base_sequence: [self.vocabulary.word_map['<pad>'] for _ in range(self.vocabulary.max_length-len(base_sequence))]
 
@@ -51,10 +53,12 @@ class DatasetPreparation:
         y = []
 
         for line in lines:
-            if 'ans:' in line:
-                y.append(self.convert_line_to_tensor(line, target=True))
-            if 'ques:' in line:
-                x.append(self.convert_line_to_tensor(line, target=False))
+            q_match = re.search(r'<question>(.*?)</question>', line)
+            a_match = re.search(r'<answer>(.*?)</answer>', line)
+            if q_match:
+                x.append(self.convert_line_to_tensor(q_match.group(1).strip(), target=False))
+            if a_match:
+                y.append(self.convert_line_to_tensor(a_match.group(1).strip(), target=True))
 
         return x, y
 

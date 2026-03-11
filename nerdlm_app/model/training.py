@@ -122,7 +122,19 @@ class TrainingEvaluating:
                             self.vocab_size = max(saved_vocab, self.vocab_size)
                             self.model = DeepTransformer(d_model=512, d_ff=2048, num_heads=8, num_layers_gru=2, vocab_size=self.vocab_size)
                             self.deep_transformer = self.model
-                        self.deep_transformer.load_state_dict(state_dict, strict=False)
+                            # Copy saved weights into the (possibly larger) model
+                            model_dict = self.deep_transformer.state_dict()
+                            for key in state_dict:
+                                if key in model_dict:
+                                    if state_dict[key].shape == model_dict[key].shape:
+                                        model_dict[key] = state_dict[key]
+                                    else:
+                                        # Partial copy for resized layers (embedding, fc)
+                                        slices = tuple(slice(0, min(s, m)) for s, m in zip(state_dict[key].shape, model_dict[key].shape))
+                                        model_dict[key][slices] = state_dict[key][slices]
+                            self.deep_transformer.load_state_dict(model_dict)
+                        else:
+                            self.deep_transformer.load_state_dict(state_dict)
                     except (EOFError, RuntimeError, ValueError) as exc:
                         logging.warning(
                             f"Failed to load saved model at '{model_path}': {exc}. Using an untrained model."
@@ -197,11 +209,11 @@ class TrainingEvaluating:
         return sequences
 
     def predict(self, text, context: list, convert_to_text=True):
-        tokens = self.dataset_preparation.convert_line_to_tensor(text)
+        tokens = self.dataset_preparation.convert_line_to_tensor(text, expand_vocab=False)
 
         model_context = []
         for sentence in context:
-            context = self.dataset_preparation.convert_line_to_tensor(sentence)
+            context = self.dataset_preparation.convert_line_to_tensor(sentence, expand_vocab=False)
             model_context.append(context)
 
         out = self.deep_transformer(tokens, model_context)
@@ -211,15 +223,17 @@ class TrainingEvaluating:
             output = []
             word_map = self.dataset_preparation.vocabulary.word_map
             for index in indices.data:
-                if index in [word_map['<start>'], word_map['<pad>'], word_map['<unk>']]:
+                skip_tokens = [word_map['<start>'], word_map['<pad>'], word_map['<unk>']]
+                if 'ques' in word_map:
+                    skip_tokens.append(word_map['ques'])
+                if 'ans' in word_map:
+                    skip_tokens.append(word_map['ans'])
+                if index in skip_tokens:
                     continue
-                elif index == word_map['<end>']:
-                    if len(indices.data) > 0:
-                        continue
-                    else:
-                        break
 
-                elif index in word_map.values():
+                elif index == word_map['<end>']:
+                    break
+                elif int(index) in self.dataset_preparation.vocabulary.idx_to_word:
                     output.append(self.dataset_preparation.vocabulary.idx_to_word[int(index)])
         else:
             output = indices

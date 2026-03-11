@@ -60,7 +60,17 @@ class NerdLM:
                         if saved_vocab != self.vocab_size:
                             self.vocab_size = max(saved_vocab, self.vocab_size)
                             self.model = DeepTransformer(d_model=512, d_ff=2048, num_heads=8, num_layers_gru=2, vocab_size=self.vocab_size)
-                        self.model.load_state_dict(state_dict, strict=False)
+                            model_dict = self.model.state_dict()
+                            for key in state_dict:
+                                if key in model_dict:
+                                    if state_dict[key].shape == model_dict[key].shape:
+                                        model_dict[key] = state_dict[key]
+                                    else:
+                                        slices = tuple(slice(0, min(s, m)) for s, m in zip(state_dict[key].shape, model_dict[key].shape))
+                                        model_dict[key][slices] = state_dict[key][slices]
+                            self.model.load_state_dict(model_dict)
+                        else:
+                            self.model.load_state_dict(state_dict)
                         print(f"Successfully loaded saved model from '{model_path}'.")
                     except (EOFError, RuntimeError, ValueError) as exc:
                         print(f"Failed to load saved model at '{model_path}': {exc}. Initializing a new model.")

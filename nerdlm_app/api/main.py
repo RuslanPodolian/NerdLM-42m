@@ -5,6 +5,7 @@ from aiogram.types import Message
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.client.default import DefaultBotProperties
+from aiogram.utils.markdown import html_decoration as hd
 import dotenv
 import os
 import asyncio
@@ -81,11 +82,22 @@ async def answer(message: Message):
 
     print(f"From user: {message.from_user.username} Bot send {message.text}")
     print(f"To user: {message.chat.username} Bot send {output}")
+    print(f"Bot's answer size: {len(output)}")
 
-    await bot.send_message(message.chat.id, output)
+    # Escape HTML entities to prevent parsing errors
+    import html
+    safe_output = html.escape(output)
+
+    # Telegram message limit is 4096 characters
+    if len(safe_output) > 4096:
+        safe_output = safe_output[:4093] + "..."
+
+    await bot.send_message(message.chat.id, safe_output)
+
 
 async def main():
     await dp.start_polling(bot)
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
