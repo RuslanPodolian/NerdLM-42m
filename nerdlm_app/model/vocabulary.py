@@ -100,8 +100,16 @@ class Vocabulary:
 
 
     def load_json(self, path):
+        if not os.path.exists(path):
+            return self.word_map
+
         with open(path, 'r') as f:
-            data = json.load(f)
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                print(f"Corrupted vocabulary file at '{path}'. Rebuilding from scratch.")
+                os.remove(path)
+                return self.word_map
 
         if 'word_map_coef' not in data:
             max_id = max(v for v in data.values() if isinstance(v, int))
