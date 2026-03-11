@@ -69,7 +69,7 @@ class DatasetPreparation:
         return str(path_obj)
 
     def get_word_map(self):
-        return len(self.vocabulary.word_map)
+        return self.vocabulary.word_map['word_map_coef']
 
 
 class CustomDataset(Dataset):
