@@ -1,3 +1,5 @@
+from tkinter.messagebox import QUESTION
+
 from nerdlm_app.model.transformer import DeepTransformer
 from nerdlm_app.model.dataset import CustomDataset, DatasetPreparation
 
@@ -209,12 +211,16 @@ class TrainingEvaluating:
         return sequences
 
     def predict(self, text, context: list, convert_to_text=True):
+        QUESTION_TOKEN = self.dataset_preparation.convert_line_to_tensor('ques: ')
         tokens = self.dataset_preparation.convert_line_to_tensor(text, expand_vocab=False)
+        tokens = QUESTION_TOKEN + tokens
 
         model_context = []
         for sentence in context:
-            context = self.dataset_preparation.convert_line_to_tensor(sentence, expand_vocab=False)
+            context = QUESTION_TOKEN + self.dataset_preparation.convert_line_to_tensor(sentence, expand_vocab=False)
             model_context.append(context)
+
+        tokens = tokens + self.dataset_preparation.convert_line_to_tensor('ans:', expand_vocab=False)
 
         out = self.deep_transformer(tokens, model_context)
         indices = torch.argmax(out[0], dim=1)[0] # second one in out is list like [[True, False], [False, False]], and indices have extrac brackets
@@ -224,7 +230,7 @@ class TrainingEvaluating:
             word_map = self.dataset_preparation.vocabulary.word_map
             for index in indices.data:
                 if index in [word_map['<start>'], word_map['<pad>'],
-                             word_map['<unk>'], word_map['<question>'], word_map['<ans>']]:
+                             word_map['<unk>'], word_map['ques'], word_map['ans']]:
                     continue
 
                 elif index == word_map['<end>']:
