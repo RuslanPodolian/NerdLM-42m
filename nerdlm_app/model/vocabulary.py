@@ -108,7 +108,10 @@ class Vocabulary:
                 data = json.load(f)
             except json.JSONDecodeError:
                 print(f"Corrupted vocabulary file at '{path}'. Rebuilding from scratch.")
-                os.remove(path)
+                try:
+                    os.remove(path)
+                except OSError:
+                    pass
                 return self.word_map
 
         if 'word_map_coef' not in data:
