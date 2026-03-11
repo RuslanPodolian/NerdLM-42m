@@ -77,7 +77,7 @@ class TrainingEvaluating:
         self.device = device
 
         self.dataset_preparation = DatasetPreparation()
-        self.vocab_size = len(self.dataset_preparation.vocabulary.word_map)
+        self.vocab_size = self.dataset_preparation.vocabulary.word_map.get('word_map_coef', len(self.dataset_preparation.vocabulary.word_map))
 
         if training:
             self.path = path
@@ -119,10 +119,10 @@ class TrainingEvaluating:
                         state_dict = torch.load(str(model_path), map_location=device)
                         saved_vocab = state_dict['fc.bias'].shape[0]
                         if saved_vocab != self.vocab_size:
-                            self.vocab_size = saved_vocab
-                            self.model = DeepTransformer(d_model=512, d_ff=2048, num_heads=8, num_layers_gru=2, vocab_size=saved_vocab)
+                            self.vocab_size = max(saved_vocab, self.vocab_size)
+                            self.model = DeepTransformer(d_model=512, d_ff=2048, num_heads=8, num_layers_gru=2, vocab_size=self.vocab_size)
                             self.deep_transformer = self.model
-                        self.deep_transformer.load_state_dict(state_dict)
+                        self.deep_transformer.load_state_dict(state_dict, strict=False)
                     except (EOFError, RuntimeError, ValueError) as exc:
                         logging.warning(
                             f"Failed to load saved model at '{model_path}': {exc}. Using an untrained model."
