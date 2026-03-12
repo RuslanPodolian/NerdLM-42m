@@ -119,7 +119,7 @@ class NerdLM:
         tokens = self.predictor.predict(question, context=previous_questions, convert_to_text=convert_indices_to_words)
 
         if convert_indices_to_words:
-            text = ' '.join(tokens)
+            text = ''.join(tokens)
         else:
             text = tokens
 

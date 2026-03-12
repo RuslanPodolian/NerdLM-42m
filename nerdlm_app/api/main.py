@@ -80,9 +80,9 @@ async def answer(message: Message):
 
     chat_requests.append({message.text: message.from_user.id})
 
-    print(f"From user: {message.from_user.username} Bot send {message.text}")
+    print(f"From user: {message.from_user.username} send {message.text}")
     print(f"To user: {message.chat.username} Bot send {output}")
-    print(f"Bot's answer size: {len(output)}")
+    print(f"Bot's answer size: {len(output.split())}")
 
     # Escape HTML entities to prevent parsing errors
     import html

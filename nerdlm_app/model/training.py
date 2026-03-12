@@ -227,11 +227,11 @@ class TrainingEvaluating:
             output = []
             word_map = self.dataset_preparation.vocabulary.word_map
             for index in indices.data:
-                if index in [word_map['<start>'], word_map['<pad>'],
+                if int(index) in [word_map['<start>'], word_map['<pad>'],
                              word_map['<unk>'], word_map['ques'], word_map['ans']]:
                     continue
 
-                elif index == word_map['<end>']:
+                elif int(index) == word_map['<end>']:
                     break
                 elif int(index) in self.dataset_preparation.vocabulary.idx_to_word:
                     output.append(self.dataset_preparation.vocabulary.idx_to_word[int(index)])
