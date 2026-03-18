@@ -46,16 +46,16 @@ class DatasetPreparation:
     def load_dataset(self, path):
         path = self._validate_path(path)
         lines = self.vocabulary.load_lines_of_text_file(path)
-        self.vocabulary.add_word_per_line(lines)
+        # self.vocabulary.add_word_per_line(lines)
 
         x = []
         y = []
 
         for line in lines:
             if 'ans:' in line:
-                y.append(self.convert_line_to_tensor(line, target=True, expand_vocab=False))
+                y.append(self.convert_line_to_tensor(line, target=True, expand_vocab=True))
             if 'ques:' in line:
-                x.append(self.convert_line_to_tensor(line, target=False, expand_vocab=False))
+                x.append(self.convert_line_to_tensor(line, target=False, expand_vocab=True))
 
         return x, y
 
