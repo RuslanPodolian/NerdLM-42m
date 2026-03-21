@@ -35,12 +35,9 @@ class Vocabulary:
 
 
 
-    def add_word_per_line(self, lines, split_factor=None):
+    def add_word_per_line(self, lines, split_factor=None, save=True):
         if split_factor is None:
             split_factor = self.punctuation_str
-
-        self.word_map = self.load_json_word_map()
-        self.word_map['word_map_coef'] = self.word_map['word_map_coef']
 
         # Add all punctuation characters to vocabulary
         for punct in split_factor:
@@ -63,23 +60,21 @@ class Vocabulary:
                 if word and word not in self.word_map:
                     self.word_map[word] = self.word_map["word_map_coef"]
                     self.word_map['word_map_coef'] += 1
-        self.save_json_word_map()
+
+        if save:
+            self.save_json_word_map()
 
     def add_word(self, word):
-        self.word_map = self.load_json_word_map()
-        self.word_map['word_map_coef'] = self.word_map['word_map_coef']
         if word not in self.word_map:
             self.word_map[word] = self.word_map["word_map_coef"]
             self.word_map["word_map_coef"] += 1
-        self.save_json_word_map()
+            self.save_json_word_map()
 
     def remove_word(self, word):
-        self.word_map = self.load_json_word_map()
-        self.word_map['word_map_coef'] = self.word_map['word_map_coef']
         if word in self.word_map:
             del self.word_map[word]
             self.word_map["word_map_coef"] -= 1
-        self.save_json_word_map()
+            self.save_json_word_map()
 
     def save_json_dump(self, path, logging=False):
         existing = {}

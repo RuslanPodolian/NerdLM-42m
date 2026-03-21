@@ -46,16 +46,25 @@ class DatasetPreparation:
     def load_dataset(self, path):
         path = self._validate_path(path)
         lines = self.vocabulary.load_lines_of_text_file(path)
-        # self.vocabulary.add_word_per_line(lines)
 
+        # Build vocabulary in a single pass (one disk write total)
+        all_tokens = []
+        for line in lines:
+            if line.split():
+                all_tokens.extend(line.split())
+            else:
+                all_tokens.append(line)
+        self.vocabulary.add_word_per_line(all_tokens, save=True)
+
+        # Now convert to tensors without touching disk
         x = []
         y = []
 
         for line in lines:
             if 'ans:' in line:
-                y.append(self.convert_line_to_tensor(line, target=True, expand_vocab=True))
+                y.append(self.convert_line_to_tensor(line, target=True, expand_vocab=False))
             if 'ques:' in line:
-                x.append(self.convert_line_to_tensor(line, target=False, expand_vocab=True))
+                x.append(self.convert_line_to_tensor(line, target=False, expand_vocab=False))
 
         return x, y
 

@@ -34,12 +34,11 @@ class NerdLM:
                 if self.path_obj.suffix.lower() != '.txt':
                     print("Sorry, only txt files are supported.")
 
-                self.vocab_size = CustomDataset(str(self.path_obj)).get_word_map()
-
             self.training = TrainingEvaluating(str(self.path_obj), test_path)
 
-            self.custom_dataset = CustomDataset(str(self.path_obj))
+            self.custom_dataset = self.training.custom_dataset
             self.word_map = self.custom_dataset.dataset_preparation.vocabulary.word_map
+            self.vocab_size = self.custom_dataset.get_word_map()
             print(f"Vocabulary size: {self.vocab_size}")
 
             self.model = DeepTransformer(
